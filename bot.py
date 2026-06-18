@@ -6,7 +6,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
 # ============ AYARLAR ============
-BOT_TOKEN = os.environ.get('BOT_TOKEN', '8708118556:AAHs6IgAPkMOVtZRpflrUwn0I3JcZA4Vxws')
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
 SU_BIRIM_FIYAT = 30
 HIZMET_BEDELI = 20
 DB_PATH = '/tmp/su_abone.db'
