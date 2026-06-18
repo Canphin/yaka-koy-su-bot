@@ -1,7 +1,8 @@
 import os
 import sqlite3
+import threading
 from datetime import datetime
-from flask import Flask, request
+from flask import Flask
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
@@ -213,6 +214,7 @@ if __name__ == '__main__':
     veritabani_kur()
     
     TOKEN = os.environ.get('BOT_TOKEN', BOT_TOKEN)
+    PORT = int(os.environ.get('PORT', 5000))
     
     bot_app = Application.builder().token(TOKEN).build()
     bot_app.add_handler(CommandHandler("start", start))
@@ -222,5 +224,13 @@ if __name__ == '__main__':
     bot_app.add_handler(CommandHandler("abone_liste", abone_liste))
     bot_app.add_handler(CommandHandler("rapor", rapor))
     
-    print("✅ Bot polling modunda baslatiliyor...")
-    bot_app.run_polling()
+    def bot_baslat():
+        print("✅ Bot polling modunda baslatiliyor...")
+        bot_app.run_polling()
+    
+    bot_thread = threading.Thread(target=bot_baslat)
+    bot_thread.daemon = True
+    bot_thread.start()
+    
+    print(f"✅ Flask calisiyor... Port: {PORT}")
+    app.run(host='0.0.0.0', port=PORT)
