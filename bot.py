@@ -43,6 +43,7 @@ def veritabani_kur():
     )''')
     conn.commit()
     conn.close()
+    print("✅ Veritabani hazir!")
 
 # ============ FLASK ============
 app = Flask(__name__)
@@ -219,6 +220,7 @@ if __name__ == '__main__':
     veritabani_kur()
     
     TOKEN = os.environ.get('BOT_TOKEN', BOT_TOKEN)
+    PORT = int(os.environ.get('PORT', 5000))
     
     bot_app = Application.builder().token(TOKEN).build()
     bot_app.add_handler(CommandHandler("start", start))
@@ -228,11 +230,9 @@ if __name__ == '__main__':
     bot_app.add_handler(CommandHandler("abone_liste", abone_liste))
     bot_app.add_handler(CommandHandler("rapor", rapor))
     
-    PORT = int(os.environ.get('PORT', 5000))
-    RENDER_URL = os.environ.get('RENDER_EXTERNAL_URL', '')
-    
-    if RENDER_URL:
-        webhook_url = f"{RENDER_URL}/webhook"
-        bot_app.run_webhook(listen='0.0.0.0', port=PORT, webhook_url=webhook_url)
-    else:
-        app.run(host='0.0.0.0', port=PORT)
+    print("✅ Bot baslatiliyor...")
+    bot_app.run_webhook(
+        listen='0.0.0.0',
+        port=PORT,
+        webhook_url='https://yaka-koy-su-bot.onrender.com/webhook'
+    )
