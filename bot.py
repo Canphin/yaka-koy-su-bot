@@ -447,7 +447,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("💧 YAKA KOYU SU ISLETMESI BOTU\n\n/oku [no] [endeks]\n/abone_ekle\n/abone_sorgu [no]\n/abone_liste\n/rapor\n/panel")
 
 async def panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"🌐 Web Panel: https://yaka-koy-su-bot.onrender.com")
+    await update.message.reply_text(f"🌐 Web Panel: https://yaka-koy-su-bot-2.onrender.com")
 
 async def oku(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
