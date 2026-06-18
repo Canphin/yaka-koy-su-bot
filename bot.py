@@ -6,15 +6,15 @@ from flask import Flask, request, jsonify
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-# ============ AYARLAR ============
-BOT_TOKEN = os.environ.get('BOT_TOKEN')
-SU_BIRIM_FIYAT = 30
-HIZMET_BEDELI = 20
+# ============ AYARLAR (Render'dan alinir) ============
+BOT_TOKEN = os.environ.get('BOT_TOKEN', '')
+SU_BIRIM_FIYAT = int(os.environ.get('SU_FIYAT', '30'))
+HIZMET_BEDELI = int(os.environ.get('HIZMET_BEDEL', '20'))
 DB_PATH = '/tmp/su_abone.db'
 
-# ============ GÜVENLİK ============
-YETKILI_TELEGRAM_ID = ["6931158642"]  # Yetkili kişilerin Telegram ID'leri
-WEB_PANEL_SIFRE = "YakaKoy2026"  # Web panele giriş şifresi
+# ============ GUVENLIK (Render'dan alinir) ============
+YETKILI_TELEGRAM_ID = os.environ.get('YETKILI_ID', '').split(',')
+WEB_PANEL_SIFRE = os.environ.get('WEB_SIFRE', '')
 
 def yetkili_mi(update: Update):
     return str(update.effective_user.id) in YETKILI_TELEGRAM_ID
@@ -44,14 +44,14 @@ def veritabani_kur():
 
 app = Flask(__name__)
 
-# ============ WEB PANEL ============
+# ============ WEB PANEL HTML ============
 PANEL_HTML = '''
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yaka Köyü Su İşletmesi</title>
+    <title>Yaka Koyu Su Isletmesi</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:system-ui;background:#f0f4f8;padding:10px}
@@ -81,7 +81,7 @@ PANEL_HTML = '''
 </head>
 <body>
     <div class="container">
-        <div class="header"><h1>💧 Yaka Köyü Su İşletmesi</h1><p>Abone Yönetim ve Fatura Takip Paneli</p></div>
+        <div class="header"><h1>💧 Yaka Koyu Su Isletmesi</h1><p>Abone Yonetim ve Fatura Takip Paneli</p></div>
         <div class="stats" id="istatistikler"></div>
         <div class="card">
             <button class="tab-btn active" onclick="sekmeDegistir('aboneler')">👥 Aboneler</button>
@@ -93,36 +93,36 @@ PANEL_HTML = '''
                 <button class="btn" onclick="aboneleriYukle()">🔄 Yenile</button>
             </div>
             <div class="card"><input type="text" id="aboneArama" placeholder="🔍 Ara..." onkeyup="aboneFiltrele()"></div>
-            <div class="card" style="overflow-x:auto;"><table><thead><tr><th>No</th><th>Ad Soyad</th><th>Mahalle</th><th>Sayaç</th><th>Endeks</th><th>İşlem</th></tr></thead><tbody id="aboneTablo"></tbody></table></div>
+            <div class="card" style="overflow-x:auto;"><table><thead><tr><th>No</th><th>Ad Soyad</th><th>Mahalle</th><th>Sayac</th><th>Endeks</th><th>Islem</th></tr></thead><tbody id="aboneTablo"></tbody></table></div>
         </div>
         <div id="faturaSekmesi" style="display:none;">
             <div class="card">
                 <button class="btn" onclick="faturalariYukle()">🔄 Yenile</button>
-                <button class="btn btn-orange" onclick="modalAc('odemeModal')">💳 Toplu Ödeme</button>
+                <button class="btn btn-orange" onclick="modalAc('odemeModal')">💳 Toplu Odeme</button>
             </div>
             <div class="card"><input type="text" id="faturaArama" placeholder="🔍 Abone no ara..." onkeyup="faturaFiltrele()"></div>
-            <div class="card" style="overflow-x:auto;"><table><thead><tr><th>Fatura No</th><th>Abone</th><th>Tüketim</th><th>Tutar</th><th>Tarih</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="faturaTablo"></tbody></table></div>
+            <div class="card" style="overflow-x:auto;"><table><thead><tr><th>Fatura No</th><th>Abone</th><th>Tuketim</th><th>Tutar</th><th>Tarih</th><th>Durum</th><th>Islem</th></tr></thead><tbody id="faturaTablo"></tbody></table></div>
         </div>
         <div id="aboneModal" class="modal"><div class="modal-content">
             <h2 id="aboneModalBaslik">➕ Yeni Abone</h2><input type="hidden" id="aboneId">
             <input type="text" id="a_no" placeholder="Abone No *"><input type="text" id="a_ad" placeholder="Ad Soyad *">
             <input type="text" id="a_mahalle" placeholder="Mahalle *"><input type="text" id="a_sokak" placeholder="Sokak">
-            <input type="text" id="a_kapi" placeholder="Kapı No"><input type="tel" id="a_tel" placeholder="Telefon">
-            <input type="text" id="a_sayac" placeholder="Sayaç No"><input type="number" id="a_endeks" placeholder="İlk Endeks" value="0" step="0.01">
+            <input type="text" id="a_kapi" placeholder="Kapi No"><input type="tel" id="a_tel" placeholder="Telefon">
+            <input type="text" id="a_sayac" placeholder="Sayac No"><input type="number" id="a_endeks" placeholder="Ilk Endeks" value="0" step="0.01">
             <button class="btn btn-success" onclick="aboneKaydet()" style="width:100%;margin-top:10px;">💾 Kaydet</button>
-            <button class="btn btn-danger" onclick="modalKapat('aboneModal')" style="width:100%;margin-top:5px;">İptal</button>
+            <button class="btn btn-danger" onclick="modalKapat('aboneModal')" style="width:100%;margin-top:5px;">Iptal</button>
         </div></div>
         <div id="endeksModal" class="modal"><div class="modal-content">
-            <h2>✏️ Endeks Güncelle</h2><p id="endeksBilgi"></p>
+            <h2>✏️ Endeks Guncelle</h2><p id="endeksBilgi"></p>
             <input type="number" id="e_yeni" placeholder="Yeni endeks" step="0.01">
             <button class="btn btn-success" onclick="endeksGuncelle()" style="width:100%;margin-top:10px;">✅ Fatura Kes</button>
-            <button class="btn btn-danger" onclick="modalKapat('endeksModal')" style="width:100%;margin-top:5px;">İptal</button>
+            <button class="btn btn-danger" onclick="modalKapat('endeksModal')" style="width:100%;margin-top:5px;">Iptal</button>
         </div></div>
         <div id="odemeModal" class="modal"><div class="modal-content">
-            <h2>💳 Ödeme Yap</h2><select id="odemeAbone"></select>
+            <h2>💳 Odeme Yap</h2><select id="odemeAbone"></select>
             <input type="number" id="odemeTutar" placeholder="Tutar (TL)">
-            <button class="btn btn-success" onclick="odemeYap()" style="width:100%;margin-top:10px;">✅ Öde</button>
-            <button class="btn btn-danger" onclick="modalKapat('odemeModal')" style="width:100%;margin-top:5px;">İptal</button>
+            <button class="btn btn-success" onclick="odemeYap()" style="width:100%;margin-top:10px;">✅ Ode</button>
+            <button class="btn btn-danger" onclick="modalKapat('odemeModal')" style="width:100%;margin-top:5px;">Iptal</button>
         </div></div>
     </div>
     <script>
@@ -136,33 +136,34 @@ PANEL_HTML = '''
         async function faturalariYukle(){const r=await fetch('/api/faturalar?sifre='+sifre);tumFaturalar=await r.json();faturaTablosuOlustur(tumFaturalar)}
         function faturaFiltrele(){const q=document.getElementById('faturaArama').value.toLowerCase();faturaTablosuOlustur(tumFaturalar.filter(f=>f[1].includes(q)))}
         function faturaTablosuOlustur(l){let h='';l.forEach(f=>{h+=`<tr><td>#${f[0]}</td><td>#${f[1]}</td><td>${f[4]} m³</td><td>${f[8]} TL</td><td>${f[9]?f[9].substr(0,10):''}</td><td><span class="badge ${f[12]=='odendi'?'badge-odendi':'badge-odenmedi'}">${f[12]}</span></td><td>${f[12]=='odenmedi'?`<button class="btn btn-sm btn-success" onclick="tekOdeme(${f[0]})">💳</button>`:''}</td></tr>`});document.getElementById('faturaTablo').innerHTML=h||'<tr><td colspan="7">Fatura yok</td></tr>'}
-        async function istatistikleriYukle(){const r=await fetch('/api/istatistik?sifre='+sifre);const s=await r.json();document.getElementById('istatistikler').innerHTML=`<div class="stat"><h3>Toplam Abone</h3><div class="val">${s.abone}</div></div><div class="stat"><h3>Bugün Okuma</h3><div class="val">${s.bugun}</div></div><div class="stat"><h3>Toplam Borç</h3><div class="val">${s.borc} ₺</div></div><div class="stat"><h3>Son İşlem</h3><div class="val">${s.son||'-'}</div></div>`}
+        async function istatistikleriYukle(){const r=await fetch('/api/istatistik?sifre='+sifre);const s=await r.json();document.getElementById('istatistikler').innerHTML=`<div class="stat"><h3>Toplam Abone</h3><div class="val">${s.abone}</div></div><div class="stat"><h3>Bugun Okuma</h3><div class="val">${s.bugun}</div></div><div class="stat"><h3>Toplam Borc</h3><div class="val">${s.borc} ₺</div></div><div class="stat"><h3>Son Islem</h3><div class="val">${s.son||'-'}</div></div>`}
         function endeksAc(no,ad,endeks){seciliAbone=no;document.getElementById('endeksBilgi').innerHTML=`<strong>#${no} - ${ad}</strong><br>Mevcut: ${endeks} m³`;document.getElementById('e_yeni').value='';modalAc('endeksModal')}
-        async function endeksGuncelle(){const y=document.getElementById('e_yeni').value;if(!y)return;const r=await fetch('/api/endeks-guncelle?sifre='+sifre,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({abone_no:seciliAbone,son_endeks:parseFloat(y)})});const s=await r.json();if(s.basarili){alert(`✅ Fatura Kesildi!\nTüketim: ${s.tuketim} ton\nToplam: ${s.toplam} TL`);modalKapat('endeksModal');aboneleriYukle()}else alert('❌ '+s.hata)}
-        function aboneDuzenle(no){const a=tumAboneler.find(x=>x[0]==no);if(!a)return;document.getElementById('aboneModalBaslik').textContent='📝 Düzenle';document.getElementById('aboneId').value=no;document.getElementById('a_no').value=a[0];document.getElementById('a_no').disabled=true;document.getElementById('a_ad').value=a[1];document.getElementById('a_mahalle').value=a[4];document.getElementById('a_sokak').value=a[5]||'';document.getElementById('a_kapi').value=a[6]||'';document.getElementById('a_tel').value=a[2]||'';document.getElementById('a_sayac').value=a[7];document.getElementById('a_endeks').value=a[8];document.getElementById('a_endeks').disabled=true;modalAc('aboneModal')}
-        async function aboneKaydet(){const id=document.getElementById('aboneId').value;const d={abone_no:document.getElementById('a_no').value,ad_soyad:document.getElementById('a_ad').value,mahalle:document.getElementById('a_mahalle').value,sokak:document.getElementById('a_sokak').value,kapi_no:document.getElementById('a_kapi').value,telefon:document.getElementById('a_tel').value,sayac_no:document.getElementById('a_sayac').value,ilk_endeks:parseFloat(document.getElementById('a_endeks').value)||0};if(!d.abone_no||!d.ad_soyad||!d.mahalle)return alert('Zorunlu alanları doldur!');const url=id?'/api/abone-guncelle':'/api/abone-ekle';const r=await fetch(url+'?sifre='+sifre,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});const s=await r.json();if(s.basarili){alert('✅ '+s.mesaj);modalKapat('aboneModal');aboneleriYukle();document.getElementById('aboneId').value='';document.getElementById('a_no').disabled=false;document.getElementById('a_endeks').disabled=false;document.getElementById('aboneModalBaslik').textContent='➕ Yeni Abone'}else alert('❌ '+s.hata)}
+        async function endeksGuncelle(){const y=document.getElementById('e_yeni').value;if(!y)return;const r=await fetch('/api/endeks-guncelle?sifre='+sifre,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({abone_no:seciliAbone,son_endeks:parseFloat(y)})});const s=await r.json();if(s.basarili){alert(`✅ Fatura Kesildi!\nTuketim: ${s.tuketim} ton\nToplam: ${s.toplam} TL`);modalKapat('endeksModal');aboneleriYukle()}else alert('❌ '+s.hata)}
+        function aboneDuzenle(no){const a=tumAboneler.find(x=>x[0]==no);if(!a)return;document.getElementById('aboneModalBaslik').textContent='📝 Duzenle';document.getElementById('aboneId').value=no;document.getElementById('a_no').value=a[0];document.getElementById('a_no').disabled=true;document.getElementById('a_ad').value=a[1];document.getElementById('a_mahalle').value=a[4];document.getElementById('a_sokak').value=a[5]||'';document.getElementById('a_kapi').value=a[6]||'';document.getElementById('a_tel').value=a[2]||'';document.getElementById('a_sayac').value=a[7];document.getElementById('a_endeks').value=a[8];document.getElementById('a_endeks').disabled=true;modalAc('aboneModal')}
+        async function aboneKaydet(){const id=document.getElementById('aboneId').value;const d={abone_no:document.getElementById('a_no').value,ad_soyad:document.getElementById('a_ad').value,mahalle:document.getElementById('a_mahalle').value,sokak:document.getElementById('a_sokak').value,kapi_no:document.getElementById('a_kapi').value,telefon:document.getElementById('a_tel').value,sayac_no:document.getElementById('a_sayac').value,ilk_endeks:parseFloat(document.getElementById('a_endeks').value)||0};if(!d.abone_no||!d.ad_soyad||!d.mahalle)return alert('Zorunlu alanlari doldur!');const url=id?'/api/abone-guncelle':'/api/abone-ekle';const r=await fetch(url+'?sifre='+sifre,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});const s=await r.json();if(s.basarili){alert('✅ '+s.mesaj);modalKapat('aboneModal');aboneleriYukle();document.getElementById('aboneId').value='';document.getElementById('a_no').disabled=false;document.getElementById('a_endeks').disabled=false;document.getElementById('aboneModalBaslik').textContent='➕ Yeni Abone'}else alert('❌ '+s.hata)}
         async function aboneSil(no){if(!confirm(`#${no} silinsin mi?`))return;const r=await fetch('/api/abone-sil/'+no+'?sifre='+sifre,{method:'DELETE'});const s=await r.json();alert(s.basarili?'✅ Silindi':'❌ '+s.hata);aboneleriYukle()}
-        async function tekOdeme(fn){const r=await fetch('/api/odeme/'+fn+'?sifre='+sifre,{method:'POST'});const s=await r.json();alert(s.basarili?'✅ Ödendi':'❌ Hata');faturalariYukle()}
-        async function odemeYap(){const abone=document.getElementById('odemeAbone').value;const tutar=document.getElementById('odemeTutar').value;if(!abone||!tutar)return;const r=await fetch('/api/toplu-odeme?sifre='+sifre,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({abone_no:abone,tutar:parseFloat(tutar)})});const s=await r.json();alert(s.basarili?`✅ ${s.odenen} fatura ödendi!`:'❌ Hata');modalKapat('odemeModal');faturalariYukle()}
+        async function tekOdeme(fn){const r=await fetch('/api/odeme/'+fn+'?sifre='+sifre,{method:'POST'});const s=await r.json();alert(s.basarili?'✅ Odendi':'❌ Hata');faturalariYukle()}
+        async function odemeYap(){const abone=document.getElementById('odemeAbone').value;const tutar=document.getElementById('odemeTutar').value;if(!abone||!tutar)return;const r=await fetch('/api/toplu-odeme?sifre='+sifre,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({abone_no:abone,tutar:parseFloat(tutar)})});const s=await r.json();alert(s.basarili?`✅ ${s.odenen} fatura odendi!`:'❌ Hata');modalKapat('odemeModal');faturalariYukle()}
         aboneleriYukle();
     </script>
 </body>
 </html>
 '''
 
+# ============ FLASK ROUTES ============
 @app.route('/')
 def panel():
     sifre = request.args.get('sifre', '')
     if sifre != WEB_PANEL_SIFRE:
-        return '''<html><head><title>Giriş</title><meta name="viewport" content="width=device-width, initial-scale=1">
+        return '''<html><head><title>Giris</title><meta name="viewport" content="width=device-width, initial-scale=1">
         <style>body{font-family:system-ui;background:#f0f4f8;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
         .box{background:white;padding:30px;border-radius:15px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.1)}
         input{padding:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;width:100%;margin:10px 0}
         button{background:#2196F3;color:white;border:none;padding:12px 30px;border-radius:8px;font-size:16px;cursor:pointer}
         h2{color:#1565C0}</style></head>
-        <body><div class="box"><h2>💧 Yaka Köyü</h2><p>Şifre girin</p>
-        <form><input type="password" name="sifre" placeholder="Şifre" required><br>
-        <button>🔐 Giriş</button></form></div></body></html>'''
+        <body><div class="box"><h2>💧 Yaka Koyu</h2><p>Sifre girin</p>
+        <form><input type="password" name="sifre" placeholder="Sifre" required><br>
+        <button>🔐 Giris</button></form></div></body></html>'''
     return PANEL_HTML
 
 @app.route('/api/aboneler')
@@ -197,7 +198,7 @@ def api_endeks_guncelle():
     c.execute("SELECT onceki_endeks FROM aboneler WHERE abone_no=?", (abone_no,)); abone = c.fetchone()
     if not abone: conn.close(); return jsonify({'basarili':False,'hata':'Abone bulunamadi!'})
     onceki = abone[0]; tuketim = son_endeks - onceki
-    if tuketim < 0: conn.close(); return jsonify({'basarili':False,'hata':'Endeks küçük!'})
+    if tuketim < 0: conn.close(); return jsonify({'basarili':False,'hata':'Endeks kucuk!'})
     toplam = tuketim * SU_BIRIM_FIYAT + HIZMET_BEDELI
     c.execute("INSERT INTO faturalar (abone_no,onceki_endeks,son_endeks,tuketim_ton,birim_fiyat,su_bedeli,hizmet_bedeli,toplam_tutar,fatura_tarihi) VALUES (?,?,?,?,?,?,?,?,datetime('now','localtime'))",
               (abone_no,onceki,son_endeks,tuketim,SU_BIRIM_FIYAT,tuketim*SU_BIRIM_FIYAT,HIZMET_BEDELI,toplam))
@@ -223,7 +224,7 @@ def api_abone_guncelle():
         conn = sqlite3.connect(DB_PATH); c = conn.cursor()
         c.execute("UPDATE aboneler SET ad_soyad=?,telefon=?,mahalle=?,sokak=?,kapi_no=?,sayac_no=? WHERE abone_no=?",
                   (data['ad_soyad'],data.get('telefon',''),data['mahalle'],data.get('sokak',''),data.get('kapi_no',''),data.get('sayac_no',''),data['abone_no']))
-        conn.commit(); conn.close(); return jsonify({'basarili':True,'mesaj':'Güncellendi!'})
+        conn.commit(); conn.close(); return jsonify({'basarili':True,'mesaj':'Guncellendi!'})
     except Exception as e: return jsonify({'basarili':False,'hata':str(e)})
 
 @app.route('/api/abone-sil/<abone_no>', methods=['DELETE'])
@@ -263,7 +264,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def panel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not yetkili_mi(update): await update.message.reply_text("⛔ Yetkisiz!"); return
-    await update.message.reply_text(f"🌐 Panel: https://yaka-koy-su-bot-2.onrender.com?sifre={WEB_PANEL_SIFRE}")
+    await update.message.reply_text(f"🌐 Panel: https://yaka-koy-su-bot-2.onrender.com?sifre={os.environ.get('WEB_SIFRE', '')}")
 
 async def oku(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not yetkili_mi(update): await update.message.reply_text("⛔ Yetkisiz!"); return
@@ -335,6 +336,6 @@ if __name__ == '__main__':
     bot_app.add_handler(CommandHandler("rapor", rapor))
     bot_app.add_handler(CommandHandler("panel", panel_cmd))
     threading.Thread(target=lambda: app.run(host='0.0.0.0', port=PORT), daemon=True).start()
-    print(f"✅ Panel: https://yaka-koy-su-bot-2.onrender.com?sifre={WEB_PANEL_SIFRE}")
+    print("✅ Panel hazir!")
     print("✅ Bot baslatiliyor...")
     bot_app.run_polling()
