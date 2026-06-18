@@ -1,6 +1,5 @@
 import os
 import sqlite3
-import asyncio
 from datetime import datetime
 from flask import Flask, request
 from telegram import Update
@@ -52,13 +51,6 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return "✅ Yaka Koyu Su Isletmesi Calisiyor!"
-
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    data = request.get_json(force=True)
-    update = Update.de_json(data, bot_app.bot)
-    asyncio.run(bot_app.update_queue.put(update))
-    return 'OK'
 
 # ============ TELEGRAM BOT ============
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -221,7 +213,6 @@ if __name__ == '__main__':
     veritabani_kur()
     
     TOKEN = os.environ.get('BOT_TOKEN', BOT_TOKEN)
-    PORT = int(os.environ.get('PORT', 5000))
     
     bot_app = Application.builder().token(TOKEN).build()
     bot_app.add_handler(CommandHandler("start", start))
@@ -231,11 +222,5 @@ if __name__ == '__main__':
     bot_app.add_handler(CommandHandler("abone_liste", abone_liste))
     bot_app.add_handler(CommandHandler("rapor", rapor))
     
-    async def baslat():
-        await bot_app.initialize()
-        await bot_app.start()
-    
-    asyncio.run(baslat())
-    
-    print("✅ Bot baslatiliyor...")
-    app.run(host='0.0.0.0', port=PORT)
+    print("✅ Bot polling modunda baslatiliyor...")
+    bot_app.run_polling()
