@@ -1,7 +1,7 @@
-import sqlite3
 import os
+import sqlite3
 from datetime import datetime
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
@@ -38,47 +38,37 @@ def veritabani_kur():
         hizmet_bedeli REAL NOT NULL,
         toplam_tutar REAL NOT NULL,
         fatura_tarihi TEXT DEFAULT (datetime('now','localtime')),
-        son_odeme_tarihi TEXT,
         okuyan TEXT,
         durum TEXT DEFAULT 'odenmedi'
     )''')
     conn.commit()
     conn.close()
-    print("✅ Veritabani hazir!")
 
-# ============ FLASK UYGULAMASI ============
-web_app = Flask(__name__)
+# ============ FLASK ============
+app = Flask(__name__)
 
-@web_app.route('/')
-def ana_sayfa():
-    return """
-    <html><head><title>Yaka Koyu Su Isletmesi</title>
-    <meta charset='UTF-8'>
-    <style>body{font-family:Arial;text-align:center;padding:50px;background:#f0f4f8}
-    h1{color:#1565C0}span{font-size:50px}</style></head>
-    <body><span>💧</span><h1>Yaka Koyu Su Isletmesi</h1>
-    <p>✅ Sistem Aktif</p><p>Telegram botunu kullanin</p></body></html>"""
+@app.route('/')
+def home():
+    return "✅ Yaka Koyu Su Isletmesi Calisiyor!"
 
-@web_app.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['POST'])
 def webhook():
-    if bot_app:
-        update = Update.de_json(request.get_json(force=True), bot_app.bot)
-        bot_app.update_queue.put_nowait(update)
-        return 'OK'
-    return 'Bot baslatilmadi', 500
+    data = request.get_json(force=True)
+    update = Update.de_json(data, bot_app.bot)
+    bot_app.update_queue.put_nowait(update)
+    return 'OK'
 
-# ============ TELEGRAM BOT ============
-bot_app = None
-
+# ============ TELEGRAM BOT KOMUTLARI ============
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("""💧 YAKA KOYU SU ISLETMESI BOTU
-
-📋 Komutlar:
-/oku [no] [endeks] - Sayac okuma gir
-/abone_ekle - Yeni abone kaydi
-/abone_sorgu [no] - Abone sorgula
-/abone_liste - Tum aboneler
-/rapor - Gunluk rapor""")
+    await update.message.reply_text(
+        "💧 YAKA KOYU SU ISLETMESI BOTU\n\n"
+        "📋 Komutlar:\n"
+        "/oku [no] [endeks] - Sayac okuma gir\n"
+        "/abone_ekle - Yeni abone kaydi\n"
+        "/abone_sorgu [no] - Abone sorgula\n"
+        "/abone_liste - Tum aboneler\n"
+        "/rapor - Gunluk rapor"
+    )
 
 async def oku(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
@@ -104,50 +94,38 @@ async def oku(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tuketim = son_endeks - onceki
     
     if tuketim < 0:
-        await update.message.reply_text(f"❌ Son endeks ({son_endeks}) oncekinden ({onceki}) kucuk!")
+        await update.message.reply_text(f"❌ Son endeks oncekinden kucuk!")
         conn.close()
         return
     
     su_bedeli = tuketim * SU_BIRIM_FIYAT
     toplam = su_bedeli + HIZMET_BEDELI
     
-    c.execute("""INSERT INTO faturalar 
-        (abone_no, onceki_endeks, son_endeks, tuketim_ton, 
-         birim_fiyat, su_bedeli, hizmet_bedeli, toplam_tutar, 
-         fatura_tarihi, okuyan)
-        VALUES (?,?,?,?,?,?,?,?,datetime('now','localtime'),?)""",
-        (abone_no, onceki, son_endeks, tuketim, SU_BIRIM_FIYAT, su_bedeli, HIZMET_BEDELI, toplam, okuyan))
-    
+    c.execute(
+        "INSERT INTO faturalar (abone_no, onceki_endeks, son_endeks, tuketim_ton, "
+        "birim_fiyat, su_bedeli, hizmet_bedeli, toplam_tutar, fatura_tarihi, okuyan) "
+        "VALUES (?,?,?,?,?,?,?,?,datetime('now','localtime'),?)",
+        (abone_no, onceki, son_endeks, tuketim, SU_BIRIM_FIYAT, su_bedeli, HIZMET_BEDELI, toplam, okuyan)
+    )
     c.execute("UPDATE aboneler SET onceki_endeks=? WHERE abone_no=?", (son_endeks, abone_no))
     conn.commit()
     conn.close()
     
-    mesaj = f"""✅ OKUMA KAYDEDILDI - FATURA KESILDI
-
-👤 Abone: #{abone_no} - {abone[1]}
-📍 {abone[4]}, {abone[5]} Sk. No:{abone[6]}
-
-📊 TUKETIM
-Onceki: {onceki} ton
-Son: {son_endeks} ton
-Tuketim: {tuketim} ton
-
-💰 FATURA
-Su Bedeli: {su_bedeli} TL
-Hizmet: {HIZMET_BEDELI} TL
-TOPLAM: {toplam} TL
-
-👷 Okuyan: {okuyan}"""
+    mesaj = (
+        f"✅ OKUMA KAYDEDILDI - FATURA KESILDI\n\n"
+        f"👤 Abone: #{abone_no} - {abone[1]}\n"
+        f"📍 {abone[4]}, {abone[5]} Sk. No:{abone[6]}\n\n"
+        f"📊 TUKETIM\n"
+        f"Onceki: {onceki} ton\n"
+        f"Son: {son_endeks} ton\n"
+        f"Tuketim: {tuketim} ton\n\n"
+        f"💰 FATURA\n"
+        f"Su Bedeli: {su_bedeli} TL\n"
+        f"Hizmet: {HIZMET_BEDELI} TL\n"
+        f"TOPLAM: {toplam} TL\n\n"
+        f"👷 Okuyan: {okuyan}"
+    )
     await update.message.reply_text(mesaj)
-    
-    if abone[3]:
-        try:
-            await context.bot.send_message(
-                chat_id=abone[3],
-                text=f"💧 Yaka Koyu Su Isletmesi\nFaturaniz kesildi!\nToplam: {toplam} TL\nTuketim: {tuketim} ton"
-            )
-        except:
-            pass
 
 async def abone_ekle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
@@ -179,13 +157,14 @@ async def abone_ekle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         conn.commit()
         conn.close()
         
-        await update.message.reply_text(f"""✅ ABONE EKLENDI!
-
-🔢 No: {abone_no}
-👤 {ad_soyad}
-📍 {mahalle}, {sokak} Sk. No:{kapi_no}
-🔧 Sayac: {sayac_no}
-🔢 Ilk Endeks: {ilk_endeks} ton""")
+        await update.message.reply_text(
+            f"✅ ABONE EKLENDI!\n\n"
+            f"🔢 No: {abone_no}\n"
+            f"👤 {ad_soyad}\n"
+            f"📍 {mahalle}, {sokak} Sk. No:{kapi_no}\n"
+            f"🔧 Sayac: {sayac_no}\n"
+            f"🔢 Ilk Endeks: {ilk_endeks} ton"
+        )
     except Exception as e:
         await update.message.reply_text(f"❌ Hata: {str(e)}")
 
@@ -209,20 +188,20 @@ async def abone_sorgu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     faturalar = c.fetchall()
     conn.close()
     
-    mesaj = f"""📋 ABONE BILGILERI
-
-🔢 No: {abone[0]}
-👤 Ad: {abone[1]}
-📞 Tel: {abone[2] or 'Yok'}
-📍 {abone[4]}, {abone[5]} Sk. No:{abone[6]}
-🔧 Sayac: {abone[7]}
-🔢 Endeks: {abone[8]} ton
-
-📊 SON 3 FATURA:"""
+    mesaj = (
+        f"📋 ABONE BILGILERI\n\n"
+        f"🔢 No: {abone[0]}\n"
+        f"👤 Ad: {abone[1]}\n"
+        f"📞 Tel: {abone[2] or 'Yok'}\n"
+        f"📍 {abone[4]}, {abone[5]} Sk. No:{abone[6]}\n"
+        f"🔧 Sayac: {abone[7]}\n"
+        f"🔢 Endeks: {abone[8]} ton\n\n"
+        f"📊 SON 3 FATURA:"
+    )
     
     if faturalar:
         for f in faturalar:
-            mesaj += f"\n📅 {f[9][:10]} | {f[4]} ton | {f[8]} TL | {f[12]}"
+            mesaj += f"\n📅 {f[9][:10]} | {f[4]} ton | {f[8]} TL | {f[11]}"
     else:
         mesaj += "\nHenuz fatura yok."
     
@@ -261,22 +240,21 @@ async def rapor(update: Update, context: ContextTypes.DEFAULT_TYPE):
     toplam_borc = c.fetchone()[0]
     conn.close()
     
-    await update.message.reply_text(f"""📊 YAKA KOYU GUNLUK RAPOR - {bugun}
-
-📝 Bugunku Okuma: {bugun_oku[0]} adet
-💧 Toplam Tuketim: {bugun_oku[1]} ton
-💰 Toplam Fatura: {bugun_oku[2]} TL
-👥 Toplam Abone: {toplam_abone}
-💵 Tahsil Edilmemis: {toplam_borc} TL""")
+    await update.message.reply_text(
+        f"📊 YAKA KOYU GUNLUK RAPOR - {bugun}\n\n"
+        f"📝 Bugunku Okuma: {bugun_oku[0]} adet\n"
+        f"💧 Toplam Tuketim: {bugun_oku[1]} ton\n"
+        f"💰 Toplam Fatura: {bugun_oku[2]} TL\n"
+        f"👥 Toplam Abone: {toplam_abone}\n"
+        f"💵 Tahsil Edilmemis: {toplam_borc} TL"
+    )
 
 # ============ BASLAT ============
 if __name__ == '__main__':
     veritabani_kur()
     
-    # Bot token'ini al
     TOKEN = os.environ.get('BOT_TOKEN', BOT_TOKEN)
     
-    # Bot uygulamasini olustur
     bot_app = Application.builder().token(TOKEN).build()
     bot_app.add_handler(CommandHandler("start", start))
     bot_app.add_handler(CommandHandler("oku", oku))
@@ -285,21 +263,12 @@ if __name__ == '__main__':
     bot_app.add_handler(CommandHandler("abone_liste", abone_liste))
     bot_app.add_handler(CommandHandler("rapor", rapor))
     
-    # Render'da webhook, lokal'de polling
-    RENDER_URL = os.environ.get('RENDER_EXTERNAL_URL', '')
     PORT = int(os.environ.get('PORT', 5000))
     
+    # Webhook ayarla
+    RENDER_URL = os.environ.get('RENDER_EXTERNAL_URL', '')
     if RENDER_URL:
         webhook_url = f"{RENDER_URL}/webhook"
-        print(f"✅ Webhook ayarlaniyor: {webhook_url}")
-        bot_app.run_webhook(
-            listen='0.0.0.0',
-            port=PORT,
-            webhook_url=webhook_url
-        )
-    else:
-        print("✅ Polling modunda calisiyor...")
-        bot_app.run_polling()
+        bot_app.run_webhook(listen='0.0.0.0', port=PORT, webhook_url=webhook_url)
     
-    print(f"✅ Yaka Koyu Su Isletmesi calisiyor! Port: {PORT}")
-    web_app.run(host='0.0.0.0', port=PORT)
+    app.run(host='0.0.0.0', port=PORT)
