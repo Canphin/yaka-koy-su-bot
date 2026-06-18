@@ -128,7 +128,6 @@ async def rapor(update: Update, context: ContextTypes.DEFAULT_TYPE):
     c = conn.cursor()
     c.execute("SELECT COUNT(*), COALESCE(SUM(tuketim_ton),0), COALESCE(SUM(toplam_tutar),0) FROM faturalar WHERE date(fatura_tarihi)=?", (bugun,))
     o = c.fetchone()
-    c.execute("SELECT COUNT(*), COALESCE(SUM(toplam_tutar),0) FROM (SELECT COUNT(*) FROM aboneler UNION ALL SELECT COALESCE(SUM(toplam_tutar),0) FROM faturalar WHERE durum='odenmedi')")
     conn.close()
     await update.message.reply_text(f"📊 {bugun}\n📝 {o[0]} okuma\n💧 {o[1]} ton\n💰 {o[2]} TL")
 
@@ -143,6 +142,11 @@ if __name__ == '__main__':
     bot_app.add_handler(CommandHandler("abone_sorgu", abone_sorgu))
     bot_app.add_handler(CommandHandler("abone_liste", abone_liste))
     bot_app.add_handler(CommandHandler("rapor", rapor))
-    threading.Thread(target=bot_app.run_polling, daemon=True).start()
-    print("✅ Bot basladi!")
-    app.run(host='0.0.0.0', port=PORT)
+    
+    # Flask'i thread'e al
+    threading.Thread(target=lambda: app.run(host='0.0.0.0', port=PORT), daemon=True).start()
+    print(f"✅ Flask calisiyor... Port: {PORT}")
+    
+    # Botu ana thread'de baslat
+    print("✅ Bot polling modunda baslatiliyor...")
+    bot_app.run_polling()
