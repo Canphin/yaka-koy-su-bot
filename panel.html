@@ -1,0 +1,2505 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaka Köyü Su Abonelik</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* SİYAH - SARI TEMA - ŞIK İSTATİSTİKLER */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0a;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            color: #e0e0e0;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .container-fluid {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* ANA BAŞLIK */
+        h1 {
+            color: #ffc107;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border-left: 3px solid #ffc107;
+            padding-left: 15px;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        h1 i {
+            margin-right: 8px;
+        }
+        
+        /* KARTLAR */
+        .card {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-bottom: 16px;
+        }
+        
+        .card-header {
+            background: #0f0f0f !important;
+            color: #ffc107 !important;
+            font-weight: 500;
+            border-bottom: 1px solid #2a2a2a;
+            padding: 12px 16px !important;
+            font-size: 14px !important;
+        }
+        
+        .card-header i {
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .card-body {
+            background: #141414;
+            padding: 16px !important;
+        }
+        
+        /* FORMLAR */
+        .form-control, .form-select {
+            background: #2a2a2a;
+            border: 1px solid #555;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 6px 10px !important;
+            font-size: 13px !important;
+            height: 32px !important;
+        }
+        
+        .form-control::placeholder {
+            color: #aaaaaa !important;
+            opacity: 1;
+        }
+        
+        .form-select option {
+            background: #2a2a2a;
+            color: #ffffff;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #ffc107;
+            box-shadow: 0 0 0 0.1rem rgba(255, 193, 7, 0.2);
+        }
+        
+        label {
+            font-size: 12px !important;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #ffc107;
+            opacity: 0.9;
+        }
+        
+        /* BUTONLAR */
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            padding: 6px 12px !important;
+            font-size: 12px !important;
+            border: 1px solid transparent;
+        }
+        
+        .btn-sm {
+            padding: 4px 8px !important;
+            font-size: 11px !important;
+        }
+        
+        .btn-primary {
+            background: #ffc107;
+            border-color: #ffc107;
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            background: #ffcd39;
+        }
+        
+        .btn-info {
+            background: #1e1e1e;
+            border-color: #ffc107;
+            color: #ffc107;
+        }
+        
+        .btn-info:hover {
+            background: #2a2a2a;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            border-color: #ffc107;
+            color: #000;
+        }
+        
+        .btn-success {
+            background: #0f0f0f;
+            border-color: #ffc107;
+            color: #ffc107;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+            padding: 4px 8px !important;
+        }
+        
+        /* TABLOLAR */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .table {
+            color: #e0e0e0;
+            font-size: 12px !important;
+            margin-bottom: 0;
+            min-width: 1000px;
+        }
+        
+        .table thead th {
+            background: #0f0f0f;
+            color: #ffc107;
+            border-bottom: 1px solid #2a2a2a;
+            font-weight: 500;
+            padding: 8px 6px !important;
+            font-size: 12px !important;
+            white-space: nowrap;
+        }
+        
+        .table tbody td {
+            padding: 8px 6px !important;
+            vertical-align: middle;
+            white-space: nowrap;
+            border-bottom: 1px solid #1e1e1e;
+        }
+        
+        /* İSTATİSTİK KARTLARI - YENİ ŞIK TASARIM */
+        .stats-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            flex: 1;
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: #ffc107;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.1);
+        }
+        .stat-card.tiklanabilir {
+            cursor: pointer;
+            user-select: none;
+        }
+        .stat-card.tiklanabilir:active {
+            transform: scale(0.97);
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: #1e1e1e;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ffc107;
+            border: 1px solid #333;
+        }
+        
+        .stat-content {
+            flex: 1;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffc107;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+        
+        .stat-desc {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        /* KASA KARTI */
+        .kasa-card {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        
+        .kasa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .kasa-title {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .kasa-bakiye {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffc107;
+        }
+        
+        .kasa-ozet {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-top: 1px solid #2a2a2a;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .kasa-ozet-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .kasa-ozet-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+        
+        .kasa-ozet-value {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .text-success {
+            color: #28a745 !important;
+        }
+        
+        .text-danger {
+            color: #dc3545 !important;
+        }
+        
+        .badge {
+            padding: 4px 6px !important;
+            font-size: 10px !important;
+            border-radius: 4px;
+        }
+        
+        /* MODAL */
+        .modal {
+            z-index: 99999 !important;
+        }
+        .modal-backdrop {
+            z-index: 99998 !important;
+        }
+        .modal-content {
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 12px;
+        }
+        
+        .modal-header {
+            background: #181818;
+            border-bottom: 1px solid #444;
+            padding: 12px 16px;
+        }
+        
+        .modal-body {
+            background: #1e1e1e;
+        }
+        
+        .modal-footer {
+            background: #1e1e1e;
+        }
+        
+        .modal-title {
+            font-size: 15px !important;
+            font-weight: 500;
+        }
+        
+        .modal-body {
+            padding: 16px;
+        }
+        
+        .modal-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #2a2a2a;
+        }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffc107;
+        }
+        
+        /* ANA BUTONLAR */
+        .btn-group-custom {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .btn-group-custom .btn {
+            flex: 1 1 auto;
+            min-width: 70px;
+        }
+
+        /* RESPONSIVE - MOBİL & PC */
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            h1 { font-size: 17px; margin-bottom: 14px; }
+
+            /* Üst kartlar */
+            .row.g-2.mb-3 > div { margin-bottom: 8px; }
+
+            /* İstatistikler dikey */
+            .stats-container { flex-direction: column; gap: 8px; margin-bottom: 14px; }
+            .stat-card { padding: 12px 14px; gap: 12px; }
+            .stat-icon { width: 36px; height: 36px; font-size: 15px; flex-shrink: 0; }
+            .stat-value { font-size: 20px; }
+            .stat-label { font-size: 11px; }
+            .stat-desc { font-size: 10px; }
+
+            /* Butonlar - 2 sütun grid */
+            .btn-group-custom { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+            .btn-group-custom .btn { min-width: 0; font-size: 12px !important; padding: 8px 6px !important; text-align: center; }
+
+            /* Tablolar scroll */
+            .table { font-size: 11px !important; min-width: 560px; }
+            .table thead th { font-size: 11px !important; padding: 7px 5px !important; white-space: nowrap; }
+            .table tbody td { padding: 7px 5px !important; white-space: nowrap; }
+
+            /* Kasa */
+            .kasa-card { padding: 12px; }
+            .kasa-bakiye { font-size: 22px; }
+            .kasa-ozet { gap: 8px; }
+
+            /* Card padding azalt */
+            .card-body { padding: 12px !important; }
+            .card-header { padding: 10px 12px !important; }
+
+            /* Modal full width */
+            .modal-dialog { margin: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 6px; }
+            h1 { font-size: 15px; }
+            .btn-group-custom .btn { font-size: 11px !important; padding: 7px 4px !important; }
+            .stat-value { font-size: 18px; }
+            .kasa-bakiye { font-size: 20px; }
+        }
+
+        /* PC - geniş ekran iyileştirme */
+        @media (min-width: 1200px) {
+            .stats-container { gap: 20px; }
+            .stat-card { padding: 20px; }
+            .stat-value { font-size: 28px; }
+            .btn-group-custom .btn { font-size: 13px !important; padding: 8px 16px !important; }
+        }
+
+        /* Gecikme satırı */
+        tr.gecikme { background: rgba(220,53,69,0.08) !important; }
+        tr.gecikme td { color: #ff6b6b; }
+
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            @page { margin: 8mm !important; size: auto; }
+            body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
+            body > * { display: none !important; }
+            #yazdir-overlay { 
+                display: block !important; 
+                position: absolute !important;
+                top: 0 !important; left: 0 !important;
+                width: 100% !important;
+                background: #fff !important; 
+                overflow: visible !important;
+            }
+            #yazdir-overlay > div { 
+                display: block !important;
+                background: #fff !important;
+                margin: 0 !important; 
+                padding: 0 !important; 
+                max-width: 100% !important;
+                height: auto !important;
+            }
+            /* Buton çubuklarını tamamen gizle - sadece yazdir-icerik kalacak */
+            #yazdir-overlay > div > div:not(#yazdir-icerik) { display: none !important; }
+            #yazdir-icerik { 
+                display: block !important;
+                background: #fff !important;
+                padding: 0 !important; 
+                box-shadow: none !important; 
+                border-radius: 0 !important;
+                color: #111 !important;
+            }
+            /* Sadece ihtar yazısı için küçük font - abone kartı kendi fontlarını kullanır */
+            #yazdir-icerik .rmi-konu { font-size: 12px !important; padding: 6px 10px !important; }
+            #yazdir-icerik .rmi-uyari { padding: 8px 10px !important; margin: 8px 0 !important; }
+            #yazdir-icerik .rmi-imza { margin-top: 14px !important; }
+            #yazdir-icerik .rmi-paragraf { font-size: 11px !important; margin-bottom: 6px !important; line-height: 1.5 !important; }
+            #yazdir-icerik td, #yazdir-icerik th { padding: 5px 7px !important; }
+            #yazdir-icerik .rmi-alici { padding: 8px 10px !important; margin-bottom: 10px !important; }
+            #yazdir-icerik .rmi-ust { margin-bottom: 10px !important; padding-bottom: 8px !important; }
+        }
+
+        /* ABONE DETAY PANELİ */
+        .abone-panel {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 100%; max-width: 480px;
+            height: 100%;
+            background: #141414;
+            border-left: 2px solid #ffc107;
+            z-index: 8000;
+            overflow-y: auto;
+            transition: right 0.3s ease;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.5);
+        }
+        .abone-panel.acik { right: 0; }
+        .panel-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 7999;
+            display: none;
+        }
+        .panel-overlay.acik { display: block; }
+        .panel-header {
+            background: #0f0f0f;
+            padding: 14px 16px;
+            border-bottom: 1px solid #2a2a2a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .panel-header h5 { color: #ffc107; font-size: 15px; margin: 0; }
+        .panel-kapat {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #fff;
+            width: 32px; height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .panel-body { padding: 16px; }
+        .panel-abone-kart {
+            background: #1e1e1e;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+        .panel-abone-kart .ad { font-size: 18px; font-weight: 600; color: #ffc107; margin-bottom: 8px; }
+        .panel-abone-kart .bilgi { font-size: 12px; color: #aaa; margin-bottom: 3px; }
+        .panel-abone-kart .bilgi span { color: #e0e0e0; }
+        .panel-ozet {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .panel-ozet-item {
+            background: #1e1e1e;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        .panel-ozet-item .val { font-size: 18px; font-weight: 700; color: #ffc107; }
+        .panel-ozet-item .lbl { font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px; }
+        .panel-fatura-kart {
+            background: #1e1e1e;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .panel-fatura-kart.gecikti { border-color: #dc3545; background: #1a0a0a; }
+        .panel-fatura-kart.odendi { border-color: #28a745; background: #0a1a0a; }
+        .panel-fatura-kart.bekliyor { border-color: #ffc107; }
+        .pf-ust { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .pf-tarih { font-size: 12px; color: #888; }
+        .pf-durum { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+        .pf-durum.odendi { background: #0f3320; color: #28a745; }
+        .pf-durum.bekliyor { background: #332200; color: #ffc107; }
+        .pf-durum.gecikti { background: #330a0a; color: #dc3545; }
+        .pf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .pf-item label { font-size: 10px; color: #666; text-transform: uppercase; display: block; }
+        .pf-item span { font-size: 13px; color: #e0e0e0; font-weight: 500; }
+        .pf-tutar { font-size: 16px; font-weight: 700; color: #ffc107; }
+        .pf-zam { font-size: 11px; color: #dc3545; }
+        .pf-butonlar { display: flex; gap: 6px; flex-wrap: wrap; }
+        .pf-butonlar button { flex: 1; min-width: 70px; }
+        .tr-tıklanabilir { cursor: pointer; }
+        .tr-tıklanabilir:hover td { background: rgba(255,193,7,0.05) !important; }
+        .tr-aktif td { background: rgba(255,193,7,0.1) !important; }
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1><i class="fas fa-tint"></i> YAKA KÖYÜ SU</h1>
+
+        <!-- Üst Kartlar: Ayarlar, Zam, Kasa -->
+        <div class="row g-2 mb-3">
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-sliders-h"></i> FİYATLAR
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label>Ton (TL)</label>
+                            <input type="number" id="suFiyat" class="form-control" value="40">
+                        </div>
+                        <div class="mb-2">
+                            <label>Bakım (TL)</label>
+                            <input type="number" id="bakimUcreti" class="form-control" value="40">
+                        </div>
+                        <button class="btn btn-warning w-100" onclick="ayarlariGuncelle()">GÜNCELLE</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-exclamation-triangle"></i> ZAM
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label>Zam Oranı (%)</label>
+                            <input type="number" id="zamOrani" class="form-control" step="0.1" value="3.7">
+                        </div>
+                        <button class="btn btn-warning w-100" onclick="zamOraniGuncelle()">GÜNCELLE</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 col-md-4">
+                <div class="kasa-card">
+                    <div class="kasa-header">
+                        <span class="kasa-title">KASA</span>
+                        <span class="kasa-bakiye" id="kasaBakiye">0 TL</span>
+                    </div>
+                    <div class="kasa-ozet">
+                        <div class="kasa-ozet-item">
+                            <div class="kasa-ozet-label">GELİR</div>
+                            <div class="kasa-ozet-value text-success" id="toplamGelir">0</div>
+                        </div>
+                        <div class="kasa-ozet-item">
+                            <div class="kasa-ozet-label">GİDER</div>
+                            <div class="kasa-ozet-value text-danger" id="toplamGider">0</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-warning w-100" onclick="giderModal()">GİDER EKLE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ana Butonlar -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="btn-group-custom">
+                    <button class="btn btn-primary" onclick="aboneModal()">➕ ABONE</button>
+                    <button class="btn btn-info" onclick="okumaModal()">📊 OKUMA</button>
+                    <button class="btn btn-success" onclick="topluZamUygula()">⚡ ZAM</button>
+                    <button class="btn btn-secondary" onclick="ornekVeriYukle()">📁 ÖRNEK</button>
+                    <button class="btn btn-danger" onclick="tumVerileriSifirla()">🗑️ SIFIRLA</button>
+                    <button class="btn btn-warning" onclick="ihtarListesiGoster()" style="background:#8b0000;border-color:#8b0000;color:#fff;">📋 İHTAR</button>
+                    <button class="btn btn-info" onclick="odemeRaporuGoster()" style="background:#1565c0;border-color:#1565c0;color:#fff;">📌 TAKİP</button>
+                    <button class="btn btn-secondary" onclick="tahakkukListesiYazdir()" style="background:#2e7d32;border-color:#2e7d32;color:#fff;">📋 TAHAKKUK</button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- İstatistikler - YENİ ŞIK TASARIM -->
+        <div class="stats-container">
+            <div class="stat-card tiklanabilir" onclick="tumAboneleriGoster()">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">TOPLAM ABONE</div>
+                    <div class="stat-value" id="toplamAbone">0</div>
+                    <div class="stat-desc">görüntülemek için tıkla</div>
+                </div>
+            </div>
+            
+            <div class="stat-card tiklanabilir" onclick="gecikmisFaturalariGoster()">
+                <div class="stat-icon" style="border-color:#dc3545;">
+                    <i class="fas fa-clock" style="color:#dc3545;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">GECİKMİŞ</div>
+                    <div class="stat-value" id="gecikmisFatura">0</div>
+                    <div class="stat-desc">görüntülemek için tıkla</div>
+                </div>
+            </div>
+            
+            <div class="stat-card tiklanabilir" onclick="odemeRaporuGoster()">
+                <div class="stat-icon" style="border-color:#ffc107;">
+                    <i class="fas fa-coins" style="color:#ffc107;"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">TAHSİLAT</div>
+                    <div class="stat-value" id="odenecekToplam">0 TL</div>
+                    <div class="stat-desc">görüntülemek için tıkla</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aboneler Tablosu -->
+        <div class="card mb-3">
+            <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <span><i class="fas fa-users"></i> ABONELER</span>
+                <div style="position:relative;flex:1;max-width:260px;min-width:160px;">
+                    <input type="text" id="aboneArama" class="form-control" placeholder="🔍 Ad, no veya TC ara..." 
+                        oninput="aboneAra(this.value)"
+                        style="height:30px;font-size:12px;padding-right:28px;">
+                    <span id="aramaSifirla" onclick="aboneAramaSifirla()" 
+                        style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);cursor:pointer;color:#888;font-size:14px;">✕</span>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table" id="aboneTablosu">
+                        <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>AD SOYAD</th>
+                                <th>TC KİMLİK</th>
+                                <th>ADRES</th>
+                                <th>TELEFON</th>
+                                <th>SON END.</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Faturalar Tablosu -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fas fa-file-invoice"></i> FATURALAR
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table" id="faturaTablosu">
+                        <thead>
+                            <tr>
+                                <th>ABONE</th>
+                                <th>TARİH</th>
+                                <th>İLK</th>
+                                <th>SON</th>
+                                <th>TON</th>
+                                <th>TUTAR</th>
+                                <th>SON ÖD.</th>
+                                <th>DURUM</th>
+                                <th>İŞLEM</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kasa Tablosu -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-history"></i> KASA HAREKETLERİ
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table" id="kasaTablosu">
+                        <thead>
+                            <tr>
+                                <th>TARİH</th>
+                                <th>AÇIKLAMA</th>
+                                <th>GELİR</th>
+                                <th>GİDER</th>
+                                <th>BAKİYE</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modallar -->
+    <div class="modal fade" id="aboneModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">YENİ ABONE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-2 mb-2">
+                        <div class="col-6">
+                            <label>Abone No <span style="color:#dc3545;">*</span></label>
+                            <input type="text" id="aboneNo" class="form-control" placeholder="A001">
+                        </div>
+                        <div class="col-6">
+                            <label>TC Kimlik No <span style="color:#dc3545;">*</span></label>
+                            <input type="text" id="tcKimlik" class="form-control" placeholder="12345678901" maxlength="11">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label>Ad Soyad <span style="color:#dc3545;">*</span></label>
+                        <input type="text" id="adSoyad" class="form-control" placeholder="Ad Soyad">
+                    </div>
+                    <div class="mb-2">
+                        <label>Adres</label>
+                        <input type="text" id="adres" class="form-control" placeholder="Mahalle, Cadde/Sokak, No">
+                    </div>
+                    <div class="mb-2">
+                        <label>Telefon</label>
+                        <input type="text" id="telefon" class="form-control" placeholder="555 000 00 00">
+                    </div>
+                    <div class="mb-1">
+                        <label>Sayaç No</label>
+                        <input type="text" id="sayacNo" class="form-control" placeholder="örn: S-00123">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İPTAL</button>
+                    <button type="button" class="btn btn-warning" onclick="aboneKaydet()">KAYDET</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABONE DÜZENLEME MODALI -->
+    <div class="modal fade" id="aboneDuzenleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color:#ffc107;"><i class="fas fa-edit"></i> ABONE DÜZENLE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="duzenleId">
+                    <div class="row g-2 mb-2">
+                        <div class="col-6">
+                            <label>Abone No <span style="color:#dc3545;">*</span></label>
+                            <input type="text" id="duzenleAboneNo" class="form-control" placeholder="A001">
+                        </div>
+                        <div class="col-6">
+                            <label>TC Kimlik No</label>
+                            <input type="text" id="duzenleTcKimlik" class="form-control" placeholder="12345678901" maxlength="11">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label>Ad Soyad <span style="color:#dc3545;">*</span></label>
+                        <input type="text" id="duzenleAdSoyad" class="form-control" placeholder="Ad Soyad">
+                    </div>
+                    <div class="mb-2">
+                        <label>Adres</label>
+                        <input type="text" id="duzenleAdres" class="form-control" placeholder="Mahalle, Cadde/Sokak, No">
+                    </div>
+                    <div class="mb-2">
+                        <label>Telefon</label>
+                        <input type="text" id="duzenleTelefon" class="form-control" placeholder="555 000 00 00">
+                    </div>
+                    <div class="mb-1">
+                        <label>Sayaç No</label>
+                        <input type="text" id="duzenleSayacNo" class="form-control" placeholder="örn: S-00123">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İPTAL</button>
+                    <button type="button" class="btn btn-warning" onclick="aboneDuzenleKaydet()"><i class="fas fa-save"></i> KAYDET</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="okumaModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">OKUMA GİRİŞİ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <select id="okumaAboneId" class="form-select mb-2" onchange="aboneSecildi()">
+                        <option value="">ABONE SEÇ</option>
+                    </select>
+                    <input type="number" id="ilkEndeks" class="form-control mb-1" readonly>
+                    <small class="text-warning" id="ilkEndeksBilgi"></small>
+                    <input type="number" id="sonEndeks" class="form-control mt-2" placeholder="Son Endeks">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İPTAL</button>
+                    <button type="button" class="btn btn-warning" onclick="okumaKaydet()">KAYDET</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="giderModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">GİDER EKLE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="giderAciklama" class="form-control mb-2" placeholder="Açıklama">
+                    <input type="number" id="giderTutar" class="form-control mb-2" placeholder="Tutar">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İPTAL</button>
+                    <button type="button" class="btn btn-warning" onclick="giderKaydet()">EKLE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Storage
+        const STORAGE_ABONELER = 'su_aboneler_v6';
+        const STORAGE_OKUMALAR = 'su_okumalar_v6';
+        const STORAGE_KASA = 'su_kasa_v6';
+        const STORAGE_AYARLAR = 'su_ayarlar_v6';
+
+        function getAboneler() { return JSON.parse(localStorage.getItem(STORAGE_ABONELER)) || []; }
+        function setAboneler(data) { localStorage.setItem(STORAGE_ABONELER, JSON.stringify(data)); }
+        function getOkumalar() { return JSON.parse(localStorage.getItem(STORAGE_OKUMALAR)) || []; }
+        function setOkumalar(data) { localStorage.setItem(STORAGE_OKUMALAR, JSON.stringify(data)); }
+        function getKasa() { return JSON.parse(localStorage.getItem(STORAGE_KASA)) || []; }
+        function setKasa(data) { localStorage.setItem(STORAGE_KASA, JSON.stringify(data)); }
+        function getAyarlar() {
+            let a = JSON.parse(localStorage.getItem(STORAGE_AYARLAR));
+            if (!a) { a = { suFiyat: 40, bakimUcreti: 40, zamOrani: 3.7, faturaNoSayac: 1, ciltNo: 'C-01' }; setAyarlar(a); }
+            return a;
+        }
+        function setAyarlar(a) { localStorage.setItem(STORAGE_AYARLAR, JSON.stringify(a)); }
+
+        window.onload = function() {
+            document.getElementById('suFiyat').value = getAyarlar().suFiyat;
+            document.getElementById('bakimUcreti').value = getAyarlar().bakimUcreti;
+            document.getElementById('zamOrani').value = getAyarlar().zamOrani;
+            tablolariGuncelle();
+        };
+
+        function ayarlariGuncelle() {
+            let a = getAyarlar();
+            a.suFiyat = parseFloat(document.getElementById('suFiyat').value) || 40;
+            a.bakimUcreti = parseFloat(document.getElementById('bakimUcreti').value) || 40;
+
+            setAyarlar(a);
+            alert('✅ Güncellendi');
+        }
+
+        function zamOraniGuncelle() {
+            let a = getAyarlar();
+            a.zamOrani = parseFloat(document.getElementById('zamOrani').value) || 3.7;
+            setAyarlar(a);
+            alert(`✅ Zam %${a.zamOrani}`);
+        }
+
+        function sonOdemeTarihi(tarih) {
+            let d = new Date(tarih + 'T00:00:00');
+            d.setDate(d.getDate() + 15);
+            return d.toISOString().split('T')[0]; // YYYY-MM-DD tam format
+        }
+
+        function sonOdemeTarihiGoster(tarih) {
+            // Sadece görüntüleme için MM-DD
+            return sonOdemeTarihi(tarih).substring(5);
+        }
+
+        function gecikmeliMi(sonOdemeTamTarih) {
+            let bugun = new Date();
+            bugun.setHours(0,0,0,0);
+            let son = new Date(sonOdemeTamTarih + 'T00:00:00');
+            return bugun > son;
+        }
+
+        function gecikmeGunuHesapla(sonOdemeTamTarih) {
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+            let son = new Date(sonOdemeTamTarih + 'T00:00:00');
+            let fark = Math.floor((bugun - son) / (1000 * 60 * 60 * 24));
+            return fark > 0 ? fark : 0;
+        }
+
+        function zamHesapla(tutar, sonOdemeTamTarih) {
+            // Bileşik faiz: her 30 günde bir %zamOrani kat kat uygulanır
+            // Örn: 60 gün gecikmede -> tutar * (1.037)^2 - tutar
+            if (!sonOdemeTamTarih) return tutar * (getAyarlar().zamOrani / 100); // geriye dönük uyumluluk
+            let gun = gecikmeGunuHesapla(sonOdemeTamTarih);
+            if (gun <= 0) return 0;
+            let donem = Math.floor(gun / 30); // kaç 30 günlük dönem geçmiş
+            if (donem < 1) donem = 1; // en az 1 dönem (ilk gecikme)
+            let oran = getAyarlar().zamOrani / 100;
+            let carpan = Math.pow(1 + oran, donem); // bileşik
+            return tutar * carpan - tutar; // sadece zam miktarı
+        }
+
+        function zamAciklama(sonOdemeTamTarih) {
+            let gun = gecikmeGunuHesapla(sonOdemeTamTarih);
+            let donem = Math.max(1, Math.floor(gun / 30));
+            let oran = getAyarlar().zamOrani;
+            return '%' + oran + ' × ' + donem + ' dönem (' + gun + ' gün)';
+        }
+
+        function tablolariGuncelle() {
+            aboneTablosuDoldur();
+            faturaTablosuDoldur();
+            kasaTablosuDoldur();
+            kasaOzetGuncelle();
+        }
+
+        function aboneTablosuDoldur() {
+            let aboneler = getAboneler();
+            let okumalar = getOkumalar();
+            let tbody = document.querySelector('#aboneTablosu tbody');
+            tbody.innerHTML = '';
+            aboneler.forEach(a => {
+                let son = okumalar.filter(o => o.aboneId == a.id).sort((x,y) => new Date(y.tarih) - new Date(x.tarih))[0];
+                let sonEndeks = son ? son.sonEndeks : '-';
+                let tcMaskeli = a.tcKimlik ? a.tcKimlik.substring(0,3) + '****' + a.tcKimlik.slice(-4) : '-';
+                tbody.innerHTML += `<tr class="tr-tıklanabilir" id="aboneRow-${a.id}" onclick="abonePanelAc(${a.id})">
+                    <td class="text-warning">${a.aboneNo}</td>
+                    <td>${a.adSoyad}</td>
+                    <td style="letter-spacing:1px;font-size:11px;">${tcMaskeli}</td>
+                    <td>${(a.adres || '').substring(0,15)}</td>
+                    <td style="color:#ffc107;font-size:12px;">${a.sayacNo || '-'}</td>
+                    <td>${a.telefon || '-'}</td>
+                    <td class="text-warning">${sonEndeks}</td>
+                    <td onclick="event.stopPropagation()">
+                        <button class="btn btn-sm btn-info" onclick="aboneKartYazdir(${a.id})" title="Abone Kartı"><i class="fas fa-id-card"></i></button>
+                        <button class="btn btn-sm btn-warning" onclick="aboneFaturaYazdir(${a.id})" title="Fatura Yazdır"><i class="fas fa-print"></i></button>
+                        <button class="btn btn-sm btn-success" onclick="aboneDuzenleAc(${a.id})" title="Düzenle"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="aboneSil(${a.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        function faturaTablosuDoldur() {
+            let okumalar = getOkumalar();
+            let aboneler = getAboneler();
+            let tbody = document.querySelector('#faturaTablosu tbody');
+            tbody.innerHTML = '';
+            
+            let gecikmis = 0, odenecek = 0;
+            okumalar.sort((a,b) => new Date(b.tarih) - new Date(a.tarih));
+            
+            okumalar.forEach(o => {
+                let abone = aboneler.find(a => a.id == o.aboneId);
+                if (!abone) return;
+                
+                let sonOdeme = sonOdemeTarihi(o.tarih);
+                let gecikti = !o.odendi && gecikmeliMi(sonOdeme);
+                let zam = gecikti ? zamHesapla(o.tutar, sonOdeme) : 0;
+                let toplam = o.tutar + zam;
+                
+                if (!o.odendi) {
+                    odenecek += toplam;
+                    if (gecikti) gecikmis++;
+                }
+                
+                tbody.innerHTML += `<tr class="${gecikti ? 'gecikme' : ''}">
+                    <td class="text-warning">${abone.adSoyad.substring(0,8)}</td>
+                    <td>${o.tarih.substring(5)}</td>
+                    <td>${o.ilkEndeks}</td>
+                    <td class="text-warning">${o.sonEndeks}</td>
+                    <td>${o.tuketim}</td>
+                    <td>${toplam.toFixed(0)}${zam>0?' <small style="color:#ff6b6b;font-size:10px;">+'+zam.toFixed(0)+'</small>':''}</td>
+                    <td>${sonOdeme.substring(5)}</td>
+                    <td>${o.odendi ? '✅' : '❌'}</td>
+                    <td>
+                        ${!o.odendi ? `<button class="btn btn-sm btn-success" onclick="odemeYap(${o.id})">✓</button>` : ''}
+                        <button class="btn btn-sm btn-warning" onclick="tekFaturaYazdirOnce(${o.id})" title="Yazdır"><i class="fas fa-print"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="okumaSil(${o.id})">✗</button>
+                    </td>
+                </tr>`;
+            });
+            
+            document.getElementById('gecikmisFatura').innerText = gecikmis;
+            document.getElementById('odenecekToplam').innerText = odenecek.toFixed(0) + ' TL';
+        }
+
+        function kasaTablosuDoldur() {
+            let kasalar = getKasa();
+            let tbody = document.querySelector('#kasaTablosu tbody');
+            tbody.innerHTML = '';
+            kasalar.sort((a,b) => new Date(b.tarih) - new Date(a.tarih)).slice(0,20).forEach(k => {
+                tbody.innerHTML += `<tr>
+                    <td>${k.tarih.substring(5)}</td>
+                    <td>${k.aciklama.substring(0,20)}</td>
+                    <td class="text-success">${k.gelir ? k.gelir.toFixed(0) : '-'}</td>
+                    <td class="text-danger">${k.gider ? k.gider.toFixed(0) : '-'}</td>
+                    <td class="text-warning">${k.bakiye.toFixed(0)}</td>
+                </tr>`;
+            });
+        }
+
+        function kasaOzetGuncelle() {
+            let kasalar = getKasa();
+            let gelir = kasalar.reduce((t,k) => t + (k.gelir || 0), 0);
+            let gider = kasalar.reduce((t,k) => t + (k.gider || 0), 0);
+            let bakiye = kasalar.length ? kasalar[kasalar.length-1].bakiye : 0;
+            document.getElementById('toplamGelir').innerText = gelir.toFixed(0) + ' TL';
+            document.getElementById('toplamGider').innerText = gider.toFixed(0) + ' TL';
+            document.getElementById('kasaBakiye').innerText = bakiye.toFixed(0) + ' TL';
+            document.getElementById('toplamAbone').innerText = getAboneler().length;
+        }
+
+        function aboneModal() { 
+            ['aboneNo','tcKimlik','adSoyad','adres','telefon','sayacNo'].forEach(id => document.getElementById(id).value = '');
+            new bootstrap.Modal(document.getElementById('aboneModal')).show(); 
+        }
+        
+        function aboneKaydet() {
+            let no = document.getElementById('aboneNo').value.trim();
+            let ad = document.getElementById('adSoyad').value.trim();
+            let tc = document.getElementById('tcKimlik').value.trim();
+            if (!no || !ad) { alert('Abone no ve ad gerekli'); return; }
+            if (tc && (tc.length !== 11 || !/^[0-9]{11}$/.test(tc))) { alert('TC Kimlik No 11 haneli olmalı'); return; }
+            if (getAboneler().find(a => a.aboneNo === no)) { alert('Bu abone no zaten kayıtlı'); return; }
+            if (tc && getAboneler().find(a => a.tcKimlik === tc)) { alert('Bu TC Kimlik No zaten kayıtlı'); return; }
+            
+            let aboneler = getAboneler();
+            aboneler.push({
+                id: Date.now(),
+                aboneNo: no,
+                tcKimlik: tc,
+                adSoyad: ad,
+                adres: document.getElementById('adres').value,
+                telefon: document.getElementById('telefon').value,
+                sayacNo: document.getElementById('sayacNo').value.trim(),
+                kayitTarihi: (() => { let d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); })()
+            });
+            setAboneler(aboneler);
+            tablolariGuncelle();
+            bootstrap.Modal.getInstance(document.getElementById('aboneModal')).hide();
+        }
+
+        function aboneSil(id) {
+            if (!confirm('Sil?')) return;
+            setAboneler(getAboneler().filter(a => a.id != id));
+            setOkumalar(getOkumalar().filter(o => o.aboneId != id));
+            tablolariGuncelle();
+        }
+
+        function okumaModal() {
+            let aboneler = getAboneler();
+            if (!aboneler.length) { alert('Abone yok'); return; }
+            
+            let select = document.getElementById('okumaAboneId');
+            select.innerHTML = '<option value="">ABONE SEÇ</option>';
+            aboneler.forEach(a => {
+                select.innerHTML += `<option value="${a.id}">${a.aboneNo} ${a.adSoyad}</option>`;
+            });
+            
+            let ilkEndeksInput = document.getElementById('ilkEndeks');
+            ilkEndeksInput.value = '';
+            ilkEndeksInput.readOnly = false;
+            document.getElementById('ilkEndeksBilgi').innerHTML = '';
+            document.getElementById('sonEndeks').value = '';
+            new bootstrap.Modal(document.getElementById('okumaModal')).show();
+        }
+
+        function aboneSecildi() {
+            let id = document.getElementById('okumaAboneId').value;
+            let ilkEndeksInput = document.getElementById('ilkEndeks');
+            
+            if (!id) {
+                ilkEndeksInput.value = '';
+                ilkEndeksInput.readOnly = false;
+                document.getElementById('ilkEndeksBilgi').innerHTML = '';
+                return;
+            }
+            
+            let okumalar = getOkumalar().filter(o => String(o.aboneId) === String(id));
+            if (okumalar.length > 0) {
+                // Önceki okuma var: en son kaydedileni bul (id timestamp bazlı)
+                let sonOkuma = okumalar.sort((a,b) => b.id - a.id)[0];
+                let sonEndeks = sonOkuma.sonEndeks;
+                ilkEndeksInput.value = sonEndeks;
+                ilkEndeksInput.readOnly = true;
+                document.getElementById('ilkEndeksBilgi').innerHTML = `<i class="fas fa-lock"></i> Önceki fatura son endeksi: <strong>${sonEndeks}</strong>`;
+            } else {
+                // İlk okuma: kullanıcı manuel girebilir
+                ilkEndeksInput.value = '';
+                ilkEndeksInput.readOnly = false;
+                document.getElementById('ilkEndeksBilgi').innerHTML = '✏️ İlk okuma – başlangıç endeksini girin';
+            }
+        }
+
+        function okumaKaydet() {
+            let aboneId = document.getElementById('okumaAboneId').value;
+            if (!aboneId) { alert('Abone seç'); return; }
+            
+            let ilk = Number(document.getElementById('ilkEndeks').value);
+            let son = Number(document.getElementById('sonEndeks').value);
+            
+            if (isNaN(ilk) || ilk < 0) { alert('İlk endeks gerekli'); return; }
+            if (isNaN(son) || son < 0) { alert('Son endeks gerekli'); return; }
+            if (son <= ilk) { alert('Son > İlk olmalı'); return; }
+            
+            let okumalar = getOkumalar();
+            let onceki = okumalar.filter(o => String(o.aboneId) === String(aboneId)).sort((a,b) => b.id - a.id)[0];
+            
+            if (onceki && ilk !== onceki.sonEndeks) {
+                alert(`❌ İlk endeks ${onceki.sonEndeks} olmalı!\nBu değer otomatik doldurulur, lütfen aboneyi tekrar seçin.`);
+                return;
+            }
+            
+            let a = getAyarlar();
+            okumalar.push({
+                id: Date.now(),
+                aboneId: aboneId,
+                tarih: (() => { let d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); })(),
+                ilkEndeks: ilk,
+                sonEndeks: son,
+                tuketim: son - ilk,
+                tutar: ((son - ilk) * a.suFiyat) + a.bakimUcreti,
+                odendi: false
+            });
+            
+            setOkumalar(okumalar);
+            tablolariGuncelle();
+            bootstrap.Modal.getInstance(document.getElementById('okumaModal')).hide();
+        }
+
+        function okumaSil(id) {
+            if (!confirm('Sil?')) return;
+            setOkumalar(getOkumalar().filter(o => o.id != id));
+            tablolariGuncelle();
+        }
+
+        function odemeYap(okumaId) {
+            let okumalar = getOkumalar();
+            let okuma = okumalar.find(o => o.id == okumaId);
+            if (!okuma || okuma.odendi) return;
+            
+            let sonOd = sonOdemeTarihi(okuma.tarih);
+            let zam = gecikmeliMi(sonOd) ? zamHesapla(okuma.tutar, sonOd) : 0;
+            let toplam = okuma.tutar + zam;
+            
+            okuma.odendi = true;
+            setOkumalar(okumalar);
+            
+            let abone = getAboneler().find(a => a.id == okuma.aboneId);
+            let kasalar = getKasa();
+            let sonBakiye = kasalar.length ? kasalar[kasalar.length-1].bakiye : 0;
+            
+            kasalar.push({
+                id: Date.now(),
+                tarih: (() => { let d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); })(),
+                aciklama: `${abone.adSoyad} ${okuma.tarih}`,
+                gelir: toplam,
+                gider: 0,
+                bakiye: sonBakiye + toplam
+            });
+            setKasa(kasalar);
+            tablolariGuncelle();
+            alert(`Ödendi: ${toplam.toFixed(0)} TL`);
+        }
+
+        function giderModal() { 
+            document.getElementById('giderAciklama').value = '';
+            document.getElementById('giderTutar').value = '';
+            new bootstrap.Modal(document.getElementById('giderModal')).show(); 
+        }
+        
+        function giderKaydet() {
+            let aciklama = document.getElementById('giderAciklama').value.trim();
+            let tutar = parseFloat(document.getElementById('giderTutar').value);
+            if (!aciklama || isNaN(tutar) || tutar <= 0) { alert('Geçerli gider gir'); return; }
+            
+            let kasalar = getKasa();
+            let sonBakiye = kasalar.length ? kasalar[kasalar.length-1].bakiye : 0;
+            
+            kasalar.push({
+                id: Date.now(),
+                tarih: (() => { let d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); })(),
+                aciklama: aciklama,
+                gelir: 0,
+                gider: tutar,
+                bakiye: sonBakiye - tutar
+            });
+            setKasa(kasalar);
+            tablolariGuncelle();
+            bootstrap.Modal.getInstance(document.getElementById('giderModal')).hide();
+        }
+
+        function topluZamUygula() { faturaTablosuDoldur(); }
+
+        function ornekVeriYukle() {
+            setAboneler([
+                { id: 1001, aboneNo: 'A001', tcKimlik: '12345678901', adSoyad: 'Ahmet Yılmaz', adres: 'Merkez Mah. 5', telefon: '555-1001', kayitTarihi: '2026-01-01' },
+                { id: 1002, aboneNo: 'A002', tcKimlik: '98765432109', adSoyad: 'Ayşe Demir', adres: 'Çamlık Cad. 12', telefon: '555-1002', kayitTarihi: '2026-01-01' },
+                { id: 1003, aboneNo: 'A003', tcKimlik: '11122233344', adSoyad: 'Mehmet Kaya', adres: 'Bağlar Sok. 3', telefon: '555-1003', kayitTarihi: '2025-11-01' },
+                { id: 1004, aboneNo: 'A004', tcKimlik: '55566677788', adSoyad: 'Ali Çelik', adres: 'Dere Mah. 8', telefon: '555-1004', kayitTarihi: '2025-09-01' }
+            ]);
+            
+            setOkumalar([
+                { id: 2001, aboneId: 1001, tarih: '2026-01-15', ilkEndeks: 1000, sonEndeks: 1120, tuketim: 120, tutar: 120*40+40, odendi: true },
+                { id: 2002, aboneId: 1001, tarih: '2026-02-15', ilkEndeks: 1120, sonEndeks: 1250, tuketim: 130, tutar: 130*40+40, odendi: false },
+                { id: 2003, aboneId: 1001, tarih: '2026-03-01', ilkEndeks: 1250, sonEndeks: 1400, tuketim: 150, tutar: 150*40+40, odendi: false },
+                { id: 2004, aboneId: 1002, tarih: '2026-01-20', ilkEndeks: 500, sonEndeks: 580, tuketim: 80, tutar: 80*40+40, odendi: true },
+                { id: 2005, aboneId: 1002, tarih: '2026-02-20', ilkEndeks: 580, sonEndeks: 690, tuketim: 110, tutar: 110*40+40, odendi: false },
+                { id: 2006, aboneId: 1003, tarih: '2025-12-01', ilkEndeks: 200, sonEndeks: 310, tuketim: 110, tutar: 110*40+40, odendi: false },
+                { id: 2007, aboneId: 1003, tarih: '2026-01-05', ilkEndeks: 310, sonEndeks: 430, tuketim: 120, tutar: 120*40+40, odendi: false },
+                { id: 2008, aboneId: 1004, tarih: '2025-09-15', ilkEndeks: 800, sonEndeks: 950, tuketim: 150, tutar: 150*40+40, odendi: false },
+                { id: 2009, aboneId: 1004, tarih: '2025-10-15', ilkEndeks: 950, sonEndeks: 1100, tuketim: 150, tutar: 150*40+40, odendi: false },
+                { id: 2010, aboneId: 1004, tarih: '2025-11-15', ilkEndeks: 1100, sonEndeks: 1270, tuketim: 170, tutar: 170*40+40, odendi: false }
+            ]);
+            
+            setAyarlar({ suFiyat: 40, bakimUcreti: 40, zamOrani: 3.7 });
+            setKasa([]);
+            tablolariGuncelle();
+        }
+
+        function tumVerileriSifirla() {
+            if (confirm('Tüm veriler silinecek?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        /* ===================== YAZDIR FONKSİYONLARI ===================== */
+        function tekFaturaYazdirOnce(okumaId) {
+            document.getElementById('fnModalOkumaId').value = okumaId;
+            document.getElementById('fnModalFaturaNo').value = '';
+            document.getElementById('fnModalCiltNo').value = '';
+
+            // Modal'ı body'nin sonuna taşı (panel arkasında kalmasın)
+            var modalEl = document.getElementById('faturaNoModal');
+            document.body.appendChild(modalEl);
+
+            var modal = new bootstrap.Modal(modalEl, { backdrop: true, keyboard: true });
+            modal.show();
+
+            // Modal kapanınca yazdir-overlay'i tekrar göster (eğer açıksa)
+            modalEl.addEventListener('hidden.bs.modal', function handler() {
+                modalEl.removeEventListener('hidden.bs.modal', handler);
+            }, { once: true });
+        }
+
+        function faturaNoModalYazdir() {
+            let okumaId = parseInt(document.getElementById('fnModalOkumaId').value);
+            let faturaNo = document.getElementById('fnModalFaturaNo').value.trim();
+            let ciltNo = document.getElementById('fnModalCiltNo').value.trim();
+            let modalEl = document.getElementById('faturaNoModal');
+            let modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+            tekFaturaYazdir(okumaId, faturaNo, ciltNo);
+        }
+
+        function tekFaturaYazdir(okumaId, faturaNoParam, ciltNoParam) {
+            let okuma = getOkumalar().find(o => o.id == okumaId);
+            if (!okuma) return;
+            let abone = getAboneler().find(a => a.id == okuma.aboneId);
+            if (!abone) return;
+            let a = getAyarlar();
+            let sonOdeme = sonOdemeTarihi(okuma.tarih);
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+            let sonOdemeTarih = new Date(sonOdeme + 'T00:00:00');
+            let gecikti = !okuma.odendi && bugun > sonOdemeTarih;
+            let zam = gecikti ? zamHesapla(okuma.tutar, sonOdeme) : 0;
+            let toplam = okuma.tutar + zam;
+            let faturaNo = (faturaNoParam && faturaNoParam !== '') ? faturaNoParam : (okuma.faturaNo || '');
+            let ciltNo = (ciltNoParam && ciltNoParam !== '') ? ciltNoParam : (okuma.ciltNo || '');
+            let sonOdemeGoster = sonOdeme.substring(5).replace('-','.');
+
+            let uyari = '';
+            if (okuma.odendi) {
+                uyari = '';
+            } else if (gecikti) {
+                uyari = '<div style="border:2px solid #e74c3c;border-radius:10px;padding:14px 18px;margin-bottom:16px;background:#fff5f5;display:flex;align-items:center;gap:12px;"><div style="font-size:26px;">⚠️</div><div><div style="font-size:13px;font-weight:700;color:#721c24;">VADESİ GEÇMİŞ – ÖDEME YAPMANIZ BEKLENİYOR</div><div style="font-size:12px;color:#a02020;margin-top:3px;">Son ödeme tarihi <strong>' + sonOdemeGoster + '</strong> geçmiştir. Gecikme zammı uygulanmıştır.</div></div></div>';
+            } else {
+                uyari = '<div style="border:2px solid #f39c12;border-radius:10px;padding:14px 18px;margin-bottom:16px;background:#fffbf0;display:flex;align-items:center;gap:12px;"><div style="font-size:26px;">⏳</div><div><div style="font-size:13px;font-weight:700;color:#856404;">ÖDEME BEKLENİYOR</div><div style="font-size:12px;color:#a07000;margin-top:3px;">Lütfen <strong>' + sonOdemeGoster + '</strong> tarihine kadar ödemenizi yapınız.</div></div></div>';
+            }
+
+            let durumClass = okuma.odendi ? 'odendi' : gecikti ? 'gecikti' : 'bekliyor';
+            let durumText = okuma.odendi ? '✅ ÖDENDİ' : gecikti ? '⚠️ GECİKMİŞ' : '⏳ BEKLIYOR';
+
+            document.getElementById('yazdir-icerik').innerHTML = `
+<style>
+  .yf-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #ffc107;padding-bottom:14px;margin-bottom:18px;}
+  .yf-logo{font-size:20px;font-weight:700;color:#222;}
+  .yf-logo span{color:#ffc107;}
+  .yf-no{text-align:right;font-size:12px;color:#666;}
+  .yf-no strong{font-size:17px;color:#222;display:block;}
+  .yf-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+  .yf-box{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:12px;}
+  .yf-box h4{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+  .yf-box p{font-size:13px;color:#333;margin-bottom:3px;}
+  .yf-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
+  .yf-table th{background:#ffc107;color:#000;padding:9px 11px;text-align:left;font-size:12px;}
+  .yf-table td{padding:9px 11px;border-bottom:1px solid #eee;font-size:12px;}
+  .yf-total td{background:#fff9e6;font-weight:700;border-top:2px solid #ffc107;font-size:14px;}
+  .yf-durum{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+  .odendi{background:#d4edda;color:#155724;}
+  .bekliyor{background:#fff3cd;color:#856404;}
+  .gecikti{background:#f8d7da;color:#721c24;}
+  .yf-footer{border-top:1px solid #eee;padding-top:10px;text-align:center;font-size:10px;color:#aaa;}
+  @media(max-width:500px){.yf-grid{grid-template-columns:1fr;}}
+</style>
+<div class="yf-header">
+  <div class="yf-logo">💧 <span>YAKA KÖYÜ</span><br><small style="font-size:12px;font-weight:400;color:#666;">Su İdaresi</small></div>
+  <div class="yf-no">${faturaNo ? '<span>FATURA NO</span><strong>' + faturaNo + '</strong>' : ''} ${ciltNo ? '<span style="font-size:10px;color:#888;display:block;">Cilt No: ' + ciltNo + '</span>' : ''}<span style="font-size:10px;color:#999;display:block;">${okuma.tarih}</span></div>
+</div>
+<div class="yf-grid">
+  <div class="yf-box">
+    <h4>Abone Bilgileri</h4>
+    <p><strong>${abone.adSoyad}</strong></p>
+    <p style="font-size:11px;color:#666;">Abone No: ${abone.aboneNo}</p>
+    <p style="font-size:11px;color:#666;">TC: ${abone.tcKimlik || '-'}</p>
+    <p style="font-size:11px;color:#666;">${abone.adres || '-'}</p>
+    <p style="font-size:11px;color:#666;">${abone.telefon || '-'}</p>
+  </div>
+  <div class="yf-box">
+    <h4>Fatura Durumu</h4>
+    <p><span class="yf-durum ${durumClass}">${durumText}</span></p>
+    <p style="margin-top:7px;font-size:11px;color:#666;">Son Ödeme: <strong>${sonOdemeGoster}</strong></p>
+  </div>
+</div>
+${uyari}
+<table class="yf-table">
+  <thead><tr><th>AÇIKLAMA</th><th style="text-align:right;">TUTAR</th></tr></thead>
+  <tbody>
+    <tr><td>Su Tüketimi (${okuma.tuketim} ton × ${a.suFiyat} TL)</td><td style="text-align:right;">${(okuma.tuketim * a.suFiyat).toFixed(0)} TL</td></tr>
+    <tr><td>Bakım/Hizmet Ücreti</td><td style="text-align:right;">${a.bakimUcreti} TL</td></tr>
+    <tr><td style="font-size:10px;color:#999;">Sayaç No: ${abone.sayacNo || '-'}</td><td></td></tr>
+  <tr><td style="font-size:10px;color:#999;">Endeks: ${okuma.ilkEndeks} → ${okuma.sonEndeks}</td><td></td></tr>
+    ${zam > 0 ? '<tr style="color:#c0392b;"><td>Gecikme Zammı (' + zamAciklama(sonOdeme) + ')</td><td style="text-align:right;">+' + zam.toFixed(0) + ' TL</td></tr>' : ''}
+    <tr class="yf-total"><td>TOPLAM TUTAR</td><td style="text-align:right;">${toplam.toFixed(0)} TL</td></tr>
+  </tbody>
+</table>
+<div class="yf-footer">Bu fatura Yaka Köyü Su İdaresi tarafından düzenlenmiştir.</div>`;
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+
+        function aboneFaturaYazdir(aboneId) {
+            let abone = getAboneler().find(a => a.id == aboneId);
+            if (!abone) return;
+            let okumalar = getOkumalar().filter(o => String(o.aboneId) === String(aboneId)).sort((a,b) => a.id - b.id);
+            let ay = getAyarlar();
+            let toplamBorc = 0;
+            let satirlar = okumalar.map(o => {
+                let sonOdeme = sonOdemeTarihi(o.tarih);
+                let bugun = new Date(); bugun.setHours(0,0,0,0);
+                let gecikti = !o.odendi && bugun > new Date(sonOdeme + 'T00:00:00');
+                let zam = gecikti ? zamHesapla(o.tutar, sonOdeme) : 0;
+                let toplam = o.tutar + zam;
+                if (!o.odendi) toplamBorc += toplam;
+                let bg = gecikti ? 'background:#fff5f5;' : o.odendi ? 'background:#f0fff4;' : '';
+                let durum = o.odendi ? '<span style="color:#27ae60;font-size:16px;">✅</span>' : gecikti ? '<span style="color:#c0392b;font-size:16px;">⚠️</span>' : '<span style="color:#f39c12;font-size:16px;">⏳</span>';
+                let zamStr = zam > 0 ? '<br><small style="color:#c0392b;">+' + zam.toFixed(0) + ' TL zam</small>' : '';
+                return '<tr style="' + bg + '"><td>' + o.tarih + '</td><td>' + o.ilkEndeks + ' → ' + o.sonEndeks + '</td><td>' + o.tuketim + ' ton</td><td style="text-align:right;">' + o.tutar.toFixed(0) + ' TL' + zamStr + '</td><td style="text-align:right;font-weight:600;">' + toplam.toFixed(0) + ' TL</td><td style="text-align:center;">' + durum + '</td></tr>';
+            }).join('');
+
+            let bugun2 = new Date();
+            let bugunStr = bugun2.toLocaleDateString('tr-TR');
+
+            document.getElementById('yazdir-icerik').innerHTML = `
+<style>
+  .af-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #ffc107;padding-bottom:14px;margin-bottom:18px;}
+  .af-logo{font-size:20px;font-weight:700;}
+  .af-logo span{color:#ffc107;}
+  .af-abonekart{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:14px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .af-abonekart h3{grid-column:1/-1;font-size:15px;margin-bottom:4px;}
+  .af-abonekart p{font-size:12px;color:#555;}
+  .af-ozet{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+  .af-ozet-box{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:10px;text-align:center;}
+  .af-ozet-box .val{font-size:18px;font-weight:700;margin:3px 0;}
+  .af-ozet-box .lbl{font-size:10px;color:#999;text-transform:uppercase;}
+  .af-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px;min-width:480px;}
+  .af-table th{background:#ffc107;color:#000;padding:8px 10px;text-align:left;}
+  .af-table td{padding:8px 10px;border-bottom:1px solid #eee;}
+  .af-footer{border-top:1px solid #eee;padding-top:10px;text-align:center;font-size:10px;color:#aaa;}
+  @media(max-width:500px){.af-abonekart{grid-template-columns:1fr;}.af-ozet{grid-template-columns:1fr;}}
+</style>
+<div class="af-header">
+  <div class="af-logo">💧 <span>YAKA KÖYÜ</span> Su İdaresi</div>
+  <div style="text-align:right;font-size:11px;color:#999;">Tarih: ${bugunStr}</div>
+</div>
+<div class="af-abonekart">
+  <h3>👤 ${abone.adSoyad}</h3>
+  <p>🔢 Abone No: <strong>${abone.aboneNo}</strong></p>
+  <p>🪪 TC: ${abone.tcKimlik || '-'}</p>
+  <p>📍 Adres: ${abone.adres || '-'}</p>
+  <p>📞 Telefon: ${abone.telefon || '-'}</p>
+  <p>📅 Kayıt: ${abone.kayitTarihi || '-'}</p>
+</div>
+<div class="af-ozet">
+  <div class="af-ozet-box"><div class="lbl">Toplam Fatura</div><div class="val">${okumalar.length}</div></div>
+  <div class="af-ozet-box"><div class="lbl">Ödenen</div><div class="val" style="color:#27ae60;">${okumalar.filter(o=>o.odendi).length}</div></div>
+  <div class="af-ozet-box"><div class="lbl">Bekleyen Borç</div><div class="val" style="color:#e67e22;">${toplamBorc.toFixed(0)} TL</div></div>
+</div>
+<table class="af-table">
+  <thead><tr><th>TARİH</th><th>SAYAÇ</th><th>TÜKETİM</th><th style="text-align:right;">ANA TUTAR</th><th style="text-align:right;">TOPLAM</th><th style="text-align:center;">DURUM</th></tr></thead>
+  <tbody>${satirlar}</tbody>
+</table>
+<div class="af-footer">Bu belge Yaka Köyü Su İdaresi tarafından düzenlenmiştir.</div>`;
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+
+        function aboneKartYazdir(aboneId) {
+            let abone = getAboneler().find(a => a.id == aboneId);
+            if (!abone) return;
+            let bugunStr = new Date().toLocaleDateString('tr-TR');
+
+            document.getElementById('yazdir-icerik').innerHTML =
+                '<style>' +
+                '.ak-wrap{font-family:Arial,sans-serif;width:100%;display:flex;flex-direction:column;}' +
+                '.ak-ust{background:#ffc107;padding:24px 32px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}' +
+                '.ak-ust h1{font-size:24px;font-weight:900;color:#000;margin:0;}' +
+                '.ak-no{background:#000;color:#ffc107;font-size:18px;font-weight:900;padding:7px 22px;border-radius:30px;}' +
+                '.ak-orta{flex:1;padding:0 36px;display:flex;flex-direction:column;justify-content:space-evenly;border-left:6px solid #ffc107;border-right:6px solid #ffc107;}' +
+                '.ak-ad{font-size:36px;font-weight:900;color:#111;padding-bottom:24px;border-bottom:2px solid #eee;}' +
+                '.ak-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;}' +
+                '.ak-item{padding:20px 0;border-bottom:1px solid #f5f5f5;}' +
+                '.ak-tam{grid-column:1/-1;}' +
+                '.ak-lbl{font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}' +
+                '.ak-val{font-size:22px;font-weight:700;color:#111;}' +
+                '.ak-alt{background:#111;padding:18px 32px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}' +
+                '.ak-alt strong{color:#ffc107;font-size:15px;}' +
+                '.ak-alt span{color:#888;font-size:13px;}' +
+                '@media print{' +
+                '.ak-wrap{height:auto!important;}' +
+                '}' +
+                '</style>' +
+                '<div class="ak-wrap">' +
+                  '<div class="ak-ust"><h1>💧 YAKA KÖYÜ SU</h1><div class="ak-no">' + abone.aboneNo + '</div></div>' +
+                  '<div class="ak-orta">' +
+                    '<div class="ak-ad">' + abone.adSoyad + '</div>' +
+                    '<div class="ak-grid">' +
+                      '<div class="ak-item"><div class="ak-lbl">TC Kimlik No</div><div class="ak-val">' + (abone.tcKimlik || '-') + '</div></div>' +
+                      '<div class="ak-item"><div class="ak-lbl">Abone No</div><div class="ak-val">' + abone.aboneNo + '</div></div>' +
+                      '<div class="ak-item"><div class="ak-lbl">Telefon</div><div class="ak-val">' + (abone.telefon || '-') + '</div></div>' +
+                      '<div class="ak-item"><div class="ak-lbl">Kayıt Tarihi</div><div class="ak-val">' + (abone.kayitTarihi || '-') + '</div></div>' +
+                      '<div class="ak-item ak-tam"><div class="ak-lbl">Adres</div><div class="ak-val">' + (abone.adres || '-') + '</div></div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div class="ak-alt"><strong>Yaka Köyü Su İdaresi</strong><span>Basım: ' + bugunStr + '</span></div>' +
+                '</div>';
+
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function ihtarListesiGoster() {
+            let aboneler = getAboneler();
+            let okumalar = getOkumalar();
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+
+            // 60+ gün gecikmiş ödenmemiş faturaları olan aboneleri bul
+            let ihtarliAboneler = [];
+
+            aboneler.forEach(abone => {
+                let aboneOkumalari = okumalar.filter(o => String(o.aboneId) === String(abone.id) && !o.odendi);
+                let enEskiGecikme = null;
+                let toplamBorc = 0;
+                let faturaSayisi = 0;
+
+                aboneOkumalari.forEach(o => {
+                    let sonOdeme = new Date(sonOdemeTarihi(o.tarih) + 'T00:00:00');
+                    let farkGun = Math.floor((bugun - sonOdeme) / (1000 * 60 * 60 * 24));
+                    if (farkGun >= 60) {
+                        let zam = zamHesapla(o.tutar, sonOdemeTarihi(o.tarih));
+                        toplamBorc += o.tutar + zam;
+                        faturaSayisi++;
+                        if (!enEskiGecikme || farkGun > enEskiGecikme) enEskiGecikme = farkGun;
+                    }
+                });
+
+                if (faturaSayisi > 0) {
+                    ihtarliAboneler.push({ abone, toplamBorc, faturaSayisi, enEskiGecikme });
+                }
+            });
+
+            if (ihtarliAboneler.length === 0) {
+                alert('60+ gün gecikmeli borçlu abone bulunamadı.');
+                return;
+            }
+
+            let satirlar = ihtarliAboneler.map(item =>
+                '<tr>' +
+                '<td style="font-weight:600;color:#8b0000;">' + item.abone.adSoyad + '</td>' +
+                '<td>' + item.abone.aboneNo + '</td>' +
+                '<td>' + (item.abone.adres || '-') + '</td>' +
+                '<td>' + (item.abone.telefon || '-') + '</td>' +
+                '<td style="text-align:center;">' + item.faturaSayisi + '</td>' +
+                '<td style="text-align:right;font-weight:700;color:#c0392b;">' + item.toplamBorc.toFixed(0) + ' TL</td>' +
+                '<td style="text-align:center;">' + item.enEskiGecikme + ' gün</td>' +
+                '<td><button onclick="ihtarYazdir(' + item.abone.id + ')" style="background:#8b0000;color:#fff;border:none;padding:5px 12px;border-radius:5px;cursor:pointer;font-size:12px;">📄 İHTAR YAZI</button></td>' +
+                '</tr>'
+            ).join('');
+
+            document.getElementById('yazdir-icerik').innerHTML = `
+<style>
+  .ih-baslik{font-size:18px;font-weight:700;color:#8b0000;border-bottom:3px solid #8b0000;padding-bottom:10px;margin-bottom:16px;}
+  .ih-table{width:100%;border-collapse:collapse;font-size:12px;min-width:520px;}
+  .ih-table th{background:#8b0000;color:#fff;padding:8px 8px;text-align:left;white-space:nowrap;}
+  .ih-table td{padding:7px 8px;border-bottom:1px solid #eee;white-space:nowrap;}
+  .ih-table tr:hover td{background:#fff5f5;}
+  .ih-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+</style>
+<div class="ih-baslik">⚠️ 60+ GÜN GECİKMİŞ ABONELER — İHTAR LİSTESİ</div>
+<p style="font-size:12px;color:#888;margin-bottom:14px;">Aşağıdaki abonelerin son ödeme tarihinin üzerinden 60 günden fazla geçmiştir.</p>
+<div class="ih-scroll"><table class="ih-table">
+  <thead><tr><th>AD SOYAD</th><th>ABONE NO</th><th>ADRES</th><th>TELEFON</th><th style="text-align:center;">FATURA</th><th style="text-align:right;">TOPLAM BORÇ</th><th style="text-align:center;">GECİKME</th><th>İŞLEM</th></tr></thead>
+  <tbody>${satirlar}</tbody>
+</table></div>`;
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function ihtarYazdir(aboneId) {
+            let abone = getAboneler().find(a => a.id == aboneId);
+            if (!abone) return;
+            let okumalar = getOkumalar().filter(o => String(o.aboneId) === String(aboneId) && !o.odendi);
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+            let ay = getAyarlar();
+
+            let gecikmisFaturalar = okumalar.filter(o => {
+                let sonOdeme = new Date(sonOdemeTarihi(o.tarih) + 'T00:00:00');
+                return Math.floor((bugun - sonOdeme) / (1000*60*60*24)) >= 60;
+            }).sort((a,b) => a.id - b.id);
+
+            if (gecikmisFaturalar.length === 0) { alert('Bu abonede 60+ gün gecikmeli fatura yok.'); return; }
+
+            let toplamAnaBorc = gecikmisFaturalar.reduce((t,o) => t + o.tutar, 0);
+            let toplamZam = gecikmisFaturalar.reduce((t,o) => t + zamHesapla(o.tutar, sonOdemeTarihi(o.tarih)), 0);
+            let genelToplam = toplamAnaBorc + toplamZam;
+
+            let bugunStr = new Date().toLocaleDateString('tr-TR', {day:'2-digit', month:'long', year:'numeric'});
+            let ihtarNo = 'IHT-' + String(Date.now()).slice(-6);
+
+            let faturaSatirlari = gecikmisFaturalar.map((o,i) => {
+                let sonOdeme = sonOdemeTarihi(o.tarih);
+                let farkGun = Math.floor((bugun - new Date(sonOdeme + 'T00:00:00')) / (1000*60*60*24));
+                let zam = zamHesapla(o.tutar, sonOdemeTarihi(o.tarih));
+                return '<tr>' +
+                    '<td style="text-align:center;">' + (i+1) + '</td>' +
+                    '<td>' + o.tarih + '</td>' +
+                    '<td style="text-align:center;">' + o.tuketim + ' ton</td>' +
+                    '<td style="text-align:right;">' + o.tutar.toFixed(0) + ' TL</td>' +
+                    '<td style="text-align:right;color:#c0392b;">' + zam.toFixed(0) + ' TL</td>' +
+                    '<td style="text-align:right;font-weight:700;">' + (o.tutar+zam).toFixed(0) + ' TL</td>' +
+                    '<td style="text-align:center;color:#c0392b;">' + farkGun + ' gün</td>' +
+                    '</tr>';
+            }).join('');
+
+            document.getElementById('yazdir-icerik').innerHTML = `
+<style>
+  body-inner { font-family: 'Times New Roman', serif; }
+  .rmi-sayfa { max-width: 620px; margin: 0 auto; font-family: Arial, sans-serif; font-size: 13px; color: #111; }
+  .rmi-ust { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; padding-bottom:14px; border-bottom:2px solid #8b0000; }
+  .rmi-logo { font-size:17px; font-weight:700; color:#8b0000; line-height:1.4; }
+  .rmi-logo small { font-size:11px; color:#666; font-weight:400; display:block; }
+  .rmi-meta { text-align:right; font-size:11px; color:#555; line-height:1.8; }
+  .rmi-konu { background:#8b0000; color:#fff; padding:10px 16px; border-radius:6px; font-weight:700; font-size:14px; text-align:center; margin-bottom:18px; letter-spacing:0.5px; }
+  .rmi-alici { border:1px solid #ddd; border-radius:6px; padding:12px 16px; margin-bottom:18px; background:#fafafa; }
+  .rmi-alici h4 { font-size:11px; color:#999; text-transform:uppercase; margin-bottom:6px; }
+  .rmi-alici p { margin-bottom:3px; font-size:13px; }
+  .rmi-paragraf { line-height:1.8; margin-bottom:14px; text-align:justify; font-size:13px; }
+  .rmi-tablo { width:100%; border-collapse:collapse; margin:16px 0; font-size:12px; }
+  .rmi-tablo th { background:#8b0000; color:#fff; padding:8px 10px; text-align:left; }
+  .rmi-tablo td { padding:7px 10px; border-bottom:1px solid #eee; }
+  .rmi-toplam { background:#fff0f0; font-weight:700; }
+  .rmi-toplam td { border-top:2px solid #8b0000 !important; font-size:14px; }
+  .rmi-uyari { border:2px solid #8b0000; border-radius:8px; padding:14px 16px; background:#fff5f5; margin:16px 0; }
+  .rmi-uyari strong { color:#8b0000; }
+  .rmi-imza { margin-top:30px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .rmi-imza-box { border-top:1px solid #333; padding-top:8px; text-align:center; font-size:11px; color:#555; }
+  .rmi-footer { border-top:1px solid #eee; padding-top:10px; text-align:center; font-size:10px; color:#aaa; margin-top:20px; }
+  @media(max-width:500px){ .rmi-ust{flex-direction:column;gap:10px;} .rmi-imza{grid-template-columns:1fr;} }
+</style>
+<div class="rmi-sayfa">
+  <div class="rmi-ust">
+    <div class="rmi-logo">
+      💧 YAKA KÖYÜ SU İDARESİ
+      <small>Su Abonelik ve Tahsilat Birimi</small>
+    </div>
+    <div class="rmi-meta">
+      <strong>İHTAR NO:</strong> ${ihtarNo}<br>
+      <strong>TARİH:</strong> ${bugunStr}<br>
+      <strong>ABONE NO:</strong> ${abone.aboneNo}
+    </div>
+  </div>
+
+  <div class="rmi-konu">⚠️ ÖDEME İHTARI BİLDİRİMİ</div>
+
+  <div class="rmi-alici">
+    <h4>Tebliğ Edilecek Kişi</h4>
+    <p><strong>${abone.adSoyad}</strong></p>
+    <p>🪪 TC: ${abone.tcKimlik || 'Belirtilmemiş'}</p>
+    <p>📍 ${abone.adres || 'Adres bilgisi yok'}</p>
+    <p>📞 ${abone.telefon || 'Telefon bilgisi yok'}</p>
+  </div>
+
+  <p class="rmi-paragraf">
+    Sayın <strong>${abone.adSoyad}</strong>,
+  </p>
+
+  <p class="rmi-paragraf">
+    Yaka Köyü Su İdaresi'ne ait su aboneliğinize ilişkin aşağıda detayları belirtilen fatura bedellerinin vadesi geçmiş olup, tarafınızdan ödeme yapılmamıştır. Söz konusu borçların son ödeme tarihlerinin <strong>60 (altmış) günden fazla</strong> süre önce geçmiş olması nedeniyle bu ihtar yazısı tarafınıza tebliğ edilmektedir.
+  </p>
+
+  <table class="rmi-tablo">
+    <thead>
+      <tr>
+        <th style="text-align:center;">#</th>
+        <th>FATURA TARİHİ</th>
+        <th style="text-align:center;">TÜKETİM</th>
+        <th style="text-align:right;">ANA BORÇ</th>
+        <th style="text-align:right;">GECİKME ZAMMI</th>
+        <th style="text-align:right;">TOPLAM</th>
+        <th style="text-align:center;">GECİKME</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${faturaSatirlari}
+      <tr class="rmi-toplam">
+        <td colspan="3" style="text-align:right;">GENEL TOPLAM</td>
+        <td style="text-align:right;">${toplamAnaBorc.toFixed(0)} TL</td>
+        <td style="text-align:right;color:#c0392b;">${toplamZam.toFixed(0)} TL</td>
+        <td style="text-align:right;color:#8b0000;">${genelToplam.toFixed(0)} TL</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="rmi-uyari">
+    <p><strong>⚠️ YASAL UYARI:</strong></p>
+    <p style="margin-top:6px;line-height:1.7;">Yukarıda belirtilen toplam <strong style="color:#8b0000;">${genelToplam.toFixed(0)} TL</strong> tutarındaki borcunuzun bu bildirimin tarafınıza ulaşmasından itibaren <strong>15 (on beş) gün</strong> içinde ödenmesi gerekmektedir. Aksi takdirde yasal tahsilat yoluna başvurulacaktır.</p>
+  </div>
+
+  <p class="rmi-paragraf">
+    Borcunuzu aşağıdaki yöntemlerle ödeyebilirsiniz:<br>
+    • Köy muhtarlığına bizzat başvurarak<br>
+    • Yetkili tahsildar aracılığıyla<br>
+    • İleride belirlenecek banka/ödeme noktaları üzerinden
+  </p>
+
+  <p class="rmi-paragraf">
+    Ödemenizi gerçekleştirmeniz halinde bu ihtarın hükmü kendiliğinden ortadan kalkacaktır. Anlayışınız için teşekkür eder, iyi günler dileriz.
+  </p>
+
+  <div class="rmi-imza">
+    <div class="rmi-imza-box">
+      <br><br>
+      Yaka Köyü Su İdaresi<br>Yetkili İmza / Kaşe
+    </div>
+    <div class="rmi-imza-box">
+      Tebliğ Tarihi: ${bugunStr}<br><br>
+      Tebliğ Alan İmza
+    </div>
+  </div>
+
+  <div class="rmi-footer">
+    Bu belge Yaka Köyü Su İdaresi tarafından resmi ihtar amacıyla düzenlenmiştir. • İhtar No: ${ihtarNo}
+  </div>
+</div>`;
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+
+        /* ===================== ABONE DETAY PANELİ ===================== */
+
+        function abonePanelAc(aboneId) {
+            let abone = getAboneler().find(a => a.id == aboneId);
+            if (!abone) return;
+            let okumalar = getOkumalar().filter(o => String(o.aboneId) === String(aboneId)).sort((a,b) => b.id - a.id);
+            let ay = getAyarlar();
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+
+            // Aktif satırı işaretle
+            document.querySelectorAll('.tr-aktif').forEach(r => r.classList.remove('tr-aktif'));
+            let aktifRow = document.getElementById('aboneRow-' + aboneId);
+            if (aktifRow) aktifRow.classList.add('tr-aktif');
+
+            // Özet hesapla
+            let toplamFatura = okumalar.length;
+            let ödenen = okumalar.filter(o => o.odendi).length;
+            let toplamBorc = 0;
+            okumalar.forEach(o => {
+                if (!o.odendi) {
+                    let sonOdeme = sonOdemeTarihi(o.tarih);
+                    let gecikti = gecikmeliMi(sonOdeme);
+                    let zam = gecikti ? zamHesapla(o.tutar, sonOdeme) : 0;
+                    toplamBorc += o.tutar + zam;
+                }
+            });
+
+            // Fatura kartları
+            let faturaKartlari = okumalar.map(o => {
+                let sonOdeme = sonOdemeTarihi(o.tarih);
+                let gecikti = !o.odendi && gecikmeliMi(sonOdeme);
+                let zam = gecikti ? zamHesapla(o.tutar, sonOdeme) : 0;
+                let toplam = o.tutar + zam;
+                let durumClass = o.odendi ? 'odendi' : gecikti ? 'gecikti' : 'bekliyor';
+                let durumText = o.odendi ? '✅ Ödendi' : gecikti ? '⚠️ Gecikmiş' : '⏳ Bekliyor';
+
+                let zamSatiri = zam > 0
+                    ? '<div class="pf-zam">+ ' + zam.toFixed(0) + ' TL zam (' + zamAciklama(sonOdeme) + ')</div>'
+                    : '';
+
+                let odemeBtn = !o.odendi
+                    ? '<button class="btn btn-sm btn-success" onclick="odemeYap(' + o.id + ');abonePanelAc(' + aboneId + ')">✓ Öde</button>'
+                    : '';
+
+                return '<div class="panel-fatura-kart ' + durumClass + '">' +
+                    '<div class="pf-ust">' +
+                        '<span class="pf-tarih"><i class="fas fa-calendar-alt"></i> ' + o.tarih + '</span>' +
+                        '<span class="pf-durum ' + durumClass + '">' + durumText + '</span>' +
+                    '</div>' +
+                    '<div class="pf-grid">' +
+                        '<div class="pf-item"><label>Sayaç</label><span>' + o.ilkEndeks + ' → ' + o.sonEndeks + '</span></div>' +
+                        '<div class="pf-item"><label>Tüketim</label><span>' + o.tuketim + ' ton</span></div>' +
+                        '<div class="pf-item"><label>Son Ödeme</label><span>' + sonOdeme.substring(5).replace('-','.') + '</span></div>' +
+                        '<div class="pf-item"><label>Ana Tutar</label><span>' + o.tutar.toFixed(0) + ' TL</span></div>' +
+                    '</div>' +
+                    zamSatiri +
+                    '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid #2a2a2a;">' +
+                        '<div><div class="pf-tutar">' + toplam.toFixed(0) + ' TL</div></div>' +
+                        '<div class="pf-butonlar">' +
+                            odemeBtn +
+                            '<button class="btn btn-sm btn-warning" onclick="tekFaturaYazdirOnce(' + o.id + ')"><i class="fas fa-print"></i></button>' +
+                            '<button class="btn btn-sm btn-danger" onclick="okumaSil(' + o.id + ');abonePanelAc(' + aboneId + ')">✗</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            let bosMsg = toplamFatura === 0
+                ? '<div style="text-align:center;padding:30px;color:#555;"><i class="fas fa-file-invoice" style="font-size:32px;margin-bottom:10px;display:block;"></i>Henüz fatura yok</div>'
+                : '';
+
+            document.getElementById('panelBaslik').textContent = abone.adSoyad;
+            document.getElementById('panelIcerik').innerHTML =
+                '<div class="panel-abone-kart">' +
+                    '<div class="ad">' + abone.adSoyad + '</div>' +
+                    '<div class="bilgi">🔢 Abone No: <span>' + abone.aboneNo + '</span></div>' +
+                    (abone.tcKimlik ? '<div class="bilgi">🪪 TC: <span>' + abone.tcKimlik.substring(0,3) + '****' + abone.tcKimlik.slice(-4) + '</span></div>' : '') +
+                    '<div class="bilgi">📍 <span>' + (abone.adres || '-') + '</span></div>' +
+                    '<div class="bilgi">📞 <span>' + (abone.telefon || '-') + '</span></div>' +
+                    '<div class="bilgi">🔧 Sayaç No: <span style="color:#ffc107;">' + (abone.sayacNo || '-') + '</span></div>' +
+                    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px;">' +
+                        '<button class="btn btn-sm btn-info" onclick="aboneKartYazdir(' + aboneId + ')"><i class="fas fa-id-card"></i> Kart</button>' +
+                        '<button class="btn btn-sm btn-warning" onclick="aboneFaturaYazdir(' + aboneId + ')"><i class="fas fa-print"></i> Faturalar</button>' +
+                        '<button class="btn btn-sm btn-success" onclick="aboneDuzenleAc(' + aboneId + ')"><i class="fas fa-edit"></i> Düzenle</button>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="panel-ozet">' +
+                    '<div class="panel-ozet-item"><div class="val">' + toplamFatura + '</div><div class="lbl">Fatura</div></div>' +
+                    '<div class="panel-ozet-item"><div class="val" style="color:#28a745;">' + ödenen + '</div><div class="lbl">Ödenen</div></div>' +
+                    '<div class="panel-ozet-item"><div class="val" style="color:' + (toplamBorc > 0 ? '#dc3545' : '#28a745') + ';">' + toplamBorc.toFixed(0) + '</div><div class="lbl">Borç TL</div></div>' +
+                '</div>' +
+                '<div style="font-size:12px;color:#666;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Fatura Geçmişi</div>' +
+                faturaKartlari + bosMsg;
+
+            document.getElementById('abonePanel').classList.add('acik');
+            document.getElementById('panelOverlay').classList.add('acik');
+        }
+
+        function panelKapat() {
+            document.getElementById('abonePanel').classList.remove('acik');
+            document.getElementById('panelOverlay').classList.remove('acik');
+            document.querySelectorAll('.tr-aktif').forEach(r => r.classList.remove('tr-aktif'));
+        }
+
+
+        /* ===================== ÖDEME TAKİP ===================== */
+
+        function odemeRaporuGoster() {
+            let aboneler = getAboneler();
+            let okumalar = getOkumalar();
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+
+            // Bu ay başı ve sonu
+            let ayBasi = new Date(bugun.getFullYear(), bugun.getMonth(), 1);
+            let ayStr = bugun.toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' });
+
+            // Her abone için durum hesapla
+            let odeyenler = [], bekliyenler = [], gecikmisList = [];
+
+            aboneler.forEach(abone => {
+                let aboneOkumalari = okumalar.filter(o => String(o.aboneId) === String(abone.id));
+                let buAyFatura = aboneOkumalari.filter(o => {
+                    let t = new Date(o.tarih + 'T00:00:00');
+                    return t >= ayBasi;
+                });
+                let tumOdenmemis = aboneOkumalari.filter(o => !o.odendi);
+
+                if (tumOdenmemis.length === 0 && aboneOkumalari.length > 0) {
+                    // Hiç borcu yok
+                    odeyenler.push(abone);
+                } else {
+                    tumOdenmemis.forEach(o => {
+                        let sonOdeme = sonOdemeTarihi(o.tarih);
+                        let gun = Math.floor((bugun - new Date(sonOdeme + 'T00:00:00')) / (1000*60*60*24));
+                        let zam = gun > 0 ? zamHesapla(o.tutar, sonOdeme) : 0;
+                        if (gun > 0) {
+                            gecikmisList.push({ abone, okuma: o, gun, zam, toplam: o.tutar + zam });
+                        } else {
+                            bekliyenler.push({ abone, okuma: o, toplam: o.tutar });
+                        }
+                    });
+                }
+            });
+
+            // Gecikmiş - en çok geciken üste
+            gecikmisList.sort((a,b) => b.gun - a.gun);
+
+            let gecikmisHtml = gecikmisList.length === 0
+                ? '<p style="color:#666;font-size:12px;padding:10px 0;">Gecikmiş fatura yok ✅</p>'
+                : gecikmisList.map(item =>
+                    '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#1a0a0a;border:1px solid #dc3545;border-radius:8px;margin-bottom:8px;">' +
+                        '<div>' +
+                            '<div style="font-size:13px;font-weight:600;color:#fff;">' + item.abone.adSoyad + ' <span style="color:#888;font-size:11px;">(' + item.abone.aboneNo + ')</span></div>' +
+                            '<div style="font-size:11px;color:#dc3545;margin-top:2px;">⚠️ ' + item.gun + ' gün gecikmiş • ' + item.okuma.tarih + '</div>' +
+                        '</div>' +
+                        '<div style="text-align:right;">' +
+                            '<div style="font-size:15px;font-weight:700;color:#dc3545;">' + item.toplam.toFixed(0) + ' TL</div>' +
+                            '<div style="font-size:10px;color:#666;">+' + item.zam.toFixed(0) + ' TL zam</div>' +
+                        '</div>' +
+                    '</div>'
+                ).join('');
+
+            let bekliyenHtml = bekliyenler.length === 0
+                ? '<p style="color:#666;font-size:12px;padding:10px 0;">Bekleyen fatura yok</p>'
+                : bekliyenler.map(item =>
+                    '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#1a1500;border:1px solid #ffc107;border-radius:8px;margin-bottom:8px;">' +
+                        '<div>' +
+                            '<div style="font-size:13px;font-weight:600;color:#fff;">' + item.abone.adSoyad + ' <span style="color:#888;font-size:11px;">(' + item.abone.aboneNo + ')</span></div>' +
+                            '<div style="font-size:11px;color:#ffc107;margin-top:2px;">⏳ Ödeme bekleniyor • ' + item.okuma.tarih + '</div>' +
+                        '</div>' +
+                        '<div style="font-size:15px;font-weight:700;color:#ffc107;">' + item.toplam.toFixed(0) + ' TL</div>' +
+                    '</div>'
+                ).join('');
+
+            let odeyenHtml = odeyenler.length === 0
+                ? '<p style="color:#666;font-size:12px;padding:10px 0;">Henüz tam ödeyen yok</p>'
+                : odeyenler.map(a =>
+                    '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#0a1a0a;border:1px solid #28a745;border-radius:8px;margin-bottom:6px;">' +
+                        '<span style="color:#28a745;font-size:16px;">✅</span>' +
+                        '<span style="font-size:13px;color:#fff;">' + a.adSoyad + '</span>' +
+                        '<span style="font-size:11px;color:#888;">(' + a.aboneNo + ')</span>' +
+                    '</div>'
+                ).join('');
+
+            let toplamGecikme = gecikmisList.reduce((t,i) => t + i.toplam, 0);
+            let toplamBekleyen = bekliyenler.reduce((t,i) => t + i.toplam, 0);
+
+            document.getElementById('yazdir-icerik').innerHTML = `
+<style>
+  .tak-baslik{font-size:16px;font-weight:700;color:#1565c0;border-bottom:3px solid #1565c0;padding-bottom:10px;margin-bottom:16px;}
+  .tak-ozet{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+  .tak-ozet-box{border-radius:8px;padding:14px;text-align:center;}
+  .tak-ozet-box .val{font-size:22px;font-weight:700;margin:4px 0;}
+  .tak-ozet-box .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+  .tak-bolum{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px 0;padding:6px 10px;border-radius:6px;}
+</style>
+<div class="tak-baslik">📌 ÖDEME TAKİP RAPORU — ${ayStr.toUpperCase()}</div>
+<div class="tak-ozet">
+  <div class="tak-ozet-box" style="background:#1a0a0a;border:1px solid #dc3545;">
+    <div class="val" style="color:#dc3545;">${gecikmisList.length}</div>
+    <div class="lbl" style="color:#888;">Gecikmiş</div>
+    <div style="font-size:12px;font-weight:600;color:#dc3545;margin-top:4px;">${toplamGecikme.toFixed(0)} TL</div>
+  </div>
+  <div class="tak-ozet-box" style="background:#1a1500;border:1px solid #ffc107;">
+    <div class="val" style="color:#ffc107;">${bekliyenler.length}</div>
+    <div class="lbl" style="color:#888;">Bekleyen</div>
+    <div style="font-size:12px;font-weight:600;color:#ffc107;margin-top:4px;">${toplamBekleyen.toFixed(0)} TL</div>
+  </div>
+  <div class="tak-ozet-box" style="background:#0a1a0a;border:1px solid #28a745;">
+    <div class="val" style="color:#28a745;">${odeyenler.length}</div>
+    <div class="lbl" style="color:#888;">Ödedi</div>
+    <div style="font-size:12px;color:#666;margin-top:4px;">—</div>
+  </div>
+</div>
+<div class="tak-bolum" style="background:#1a0a0a;color:#dc3545;">⚠️ Gecikmiş Faturalar</div>
+${gecikmisHtml}
+<div class="tak-bolum" style="background:#1a1500;color:#ffc107;">⏳ Ödeme Bekleyenler</div>
+${bekliyenHtml}
+<div class="tak-bolum" style="background:#0a1a0a;color:#28a745;">✅ Tüm Borcu Ödenmiş</div>
+${odeyenHtml}`;
+
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+
+
+        /* ===================== ARAMA ===================== */
+
+        function aboneAra(aramaMetni) {
+            let temiz = aramaMetni.trim().toLowerCase();
+            document.getElementById('aramaSifirla').style.display = temiz ? 'block' : 'none';
+            let satirlar = document.querySelectorAll('#aboneTablosu tbody tr');
+            satirlar.forEach(tr => {
+                let metin = tr.innerText.toLowerCase();
+                tr.style.display = metin.includes(temiz) ? '' : 'none';
+            });
+        }
+
+        function aboneAramaSifirla() {
+            document.getElementById('aboneArama').value = '';
+            document.getElementById('aramaSifirla').style.display = 'none';
+            document.querySelectorAll('#aboneTablosu tbody tr').forEach(tr => tr.style.display = '');
+        }
+
+        /* ===================== ABONE DÜZENLEME ===================== */
+
+        function aboneDuzenleAc(aboneId) {
+            let abone = getAboneler().find(a => a.id == aboneId);
+            if (!abone) return;
+            document.getElementById('duzenleId').value = abone.id;
+            document.getElementById('duzenleAboneNo').value = abone.aboneNo || '';
+            document.getElementById('duzenleTcKimlik').value = abone.tcKimlik || '';
+            document.getElementById('duzenleAdSoyad').value = abone.adSoyad || '';
+            document.getElementById('duzenleAdres').value = abone.adres || '';
+            document.getElementById('duzenleTelefon').value = abone.telefon || '';
+            document.getElementById('duzenleSayacNo').value = abone.sayacNo || '';
+            new bootstrap.Modal(document.getElementById('aboneDuzenleModal')).show();
+        }
+
+        function aboneDuzenleKaydet() {
+            let id = document.getElementById('duzenleId').value;
+            let no = document.getElementById('duzenleAboneNo').value.trim();
+            let ad = document.getElementById('duzenleAdSoyad').value.trim();
+            let tc = document.getElementById('duzenleTcKimlik').value.trim();
+
+            if (!no || !ad) { alert('Abone no ve ad gerekli'); return; }
+            if (tc && (tc.length !== 11 || !/^[0-9]{11}$/.test(tc))) { alert('TC Kimlik No 11 haneli olmalı'); return; }
+
+            let aboneler = getAboneler();
+            // Aynı no veya TC başka abonede var mı?
+            if (aboneler.find(a => a.aboneNo === no && String(a.id) !== String(id))) { alert('Bu abone no başkasında kayıtlı'); return; }
+            if (tc && aboneler.find(a => a.tcKimlik === tc && String(a.id) !== String(id))) { alert('Bu TC başkasında kayıtlı'); return; }
+
+            let abone = aboneler.find(a => String(a.id) === String(id));
+            if (!abone) return;
+
+            abone.aboneNo = no;
+            abone.tcKimlik = tc;
+            abone.adSoyad = ad;
+            abone.adres = document.getElementById('duzenleAdres').value;
+            abone.telefon = document.getElementById('duzenleTelefon').value;
+            abone.sayacNo = document.getElementById('duzenleSayacNo').value.trim();
+
+            setAboneler(aboneler);
+            tablolariGuncelle();
+            bootstrap.Modal.getInstance(document.getElementById('aboneDuzenleModal')).hide();
+
+            // Panel açıksa güncelle
+            let panel = document.getElementById('abonePanel');
+            if (panel.classList.contains('acik')) abonePanelAc(id);
+        }
+
+
+        /* ===================== STAT KART FONKSİYONLARI ===================== */
+
+        function tumAboneleriGoster() {
+            let aboneler = getAboneler();
+            let okumalar = getOkumalar();
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+
+            let kartlar = aboneler.length === 0
+                ? '<div style="text-align:center;padding:40px 0;color:#555;"><i class="fas fa-users" style="font-size:36px;display:block;margin-bottom:10px;"></i>Henüz abone yok</div>'
+                : aboneler.map(a => {
+                    let aboneOkumalari = okumalar.filter(o => String(o.aboneId) === String(a.id));
+                    let sonOkuma = aboneOkumalari.sort((x,y) => y.id - x.id)[0];
+                    let odenmemisler = aboneOkumalari.filter(o => !o.odendi);
+                    let gecikmisSayisi = odenmemisler.filter(o => gecikmeliMi(sonOdemeTarihi(o.tarih))).length;
+
+                    let borderRenk, durumHtml;
+                    if (gecikmisSayisi > 0) {
+                        borderRenk = '#dc3545';
+                        durumHtml = '<span style="background:#330a0a;color:#dc3545;padding:2px 10px;border-radius:8px;font-size:12px;font-weight:600;">⚠️ ' + gecikmisSayisi + ' gecikmiş</span>';
+                    } else if (odenmemisler.length > 0) {
+                        borderRenk = '#ffc107';
+                        durumHtml = '<span style="background:#332200;color:#ffc107;padding:2px 10px;border-radius:8px;font-size:12px;font-weight:600;">⏳ ' + odenmemisler.length + ' bekliyor</span>';
+                    } else {
+                        borderRenk = '#28a745';
+                        durumHtml = '<span style="background:#0f3320;color:#28a745;padding:2px 10px;border-radius:8px;font-size:12px;font-weight:600;">✅ Temiz</span>';
+                    }
+
+                    return '<div onclick="document.getElementById(\'yazdir-overlay\').style.display=\'none\';setTimeout(()=>abonePanelAc(' + a.id + '),100)" ' +
+                        'style="background:#1e1e1e;border:1px solid ' + borderRenk + ';border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;">' +
+                        '<div style="flex:1;min-width:0;">' +
+                            '<div style="font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.adSoyad + '</div>' +
+                            '<div style="font-size:12px;color:#888;margin-top:3px;">' + a.aboneNo + (a.telefon ? ' · ' + a.telefon : '') + '</div>' +
+                            '<div style="font-size:11px;color:#555;margin-top:2px;">' + (a.adres || '') + '</div>' +
+                        '</div>' +
+                        '<div style="text-align:right;flex-shrink:0;">' +
+                            durumHtml +
+                            '<div style="font-size:11px;color:#555;margin-top:6px;">Son end: ' + (sonOkuma ? sonOkuma.sonEndeks : '-') + '</div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+
+            document.getElementById('yazdir-icerik').innerHTML =
+                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+                    '<div style="font-size:17px;font-weight:700;color:#ffc107;"><i class="fas fa-users"></i> TÜM ABONELER</div>' +
+                    '<div style="font-size:20px;font-weight:800;color:#ffc107;">' + aboneler.length + '<span style="font-size:12px;color:#666;font-weight:400;margin-left:4px;">abone</span></div>' +
+                '</div>' +
+                kartlar +
+                (aboneler.length > 0 ? '<div style="margin-top:8px;font-size:11px;color:#444;text-align:center;">Karta tıklayınca abone detayı açılır</div>' : '');
+
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function gecikmisFaturalariGoster() {
+            let aboneler = getAboneler();
+            let okumalar = getOkumalar();
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+            let liste = [];
+
+            okumalar.forEach(o => {
+                if (o.odendi) return;
+                let sonOdeme = sonOdemeTarihi(o.tarih);
+                if (!gecikmeliMi(sonOdeme)) return;
+                let abone = aboneler.find(a => String(a.id) === String(o.aboneId));
+                if (!abone) return;
+                let gun = Math.floor((bugun - new Date(sonOdeme + 'T00:00:00')) / (1000*60*60*24));
+                let zam = zamHesapla(o.tutar, sonOdeme);
+                liste.push({ abone, okuma: o, gun, zam, toplam: o.tutar + zam });
+            });
+
+            liste.sort((a,b) => b.gun - a.gun);
+            let toplamBorc = liste.reduce((t,i) => t + i.toplam, 0);
+
+            let kartlar = liste.length === 0
+                ? '<div style="text-align:center;padding:40px 0;color:#555;"><i class="fas fa-check-circle" style="font-size:36px;color:#28a745;display:block;margin-bottom:10px;"></i>Gecikmiş fatura yok</div>'
+                : liste.map(item => {
+                    let renkBg = item.gun > 60 ? '#1a0505' : '#1a0a0a';
+                    let renkBorder = item.gun > 60 ? '#c0392b' : '#dc3545';
+                    return '<div onclick="document.getElementById(\'yazdir-overlay\').style.display=\'none\';setTimeout(()=>abonePanelAc(' + item.abone.id + '),100)" style="background:' + renkBg + ';border:1px solid ' + renkBorder + ';border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;">' +
+                        '<div style="flex:1;min-width:0;">' +
+                            '<div style="font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + item.abone.adSoyad + '</div>' +
+                            '<div style="font-size:12px;color:#888;margin-top:3px;">' + item.abone.aboneNo + ' · ' + item.okuma.tarih + '</div>' +
+                            (item.zam > 0 ? '<div style="font-size:11px;color:#e57373;margin-top:2px;">+' + item.zam.toFixed(0) + ' TL gecikme zammı</div>' : '') +
+                        '</div>' +
+                        '<div style="text-align:right;flex-shrink:0;">' +
+                            '<div style="font-size:18px;font-weight:800;color:#dc3545;">' + item.toplam.toFixed(0) + ' TL</div>' +
+                            '<div style="font-size:11px;background:#330a0a;color:#e57373;padding:2px 8px;border-radius:8px;margin-top:4px;">' + item.gun + ' gün gecikmiş</div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+
+            document.getElementById('yazdir-icerik').innerHTML =
+                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+                    '<div style="font-size:17px;font-weight:700;color:#dc3545;"><i class="fas fa-clock"></i> GECİKMİŞ FATURALAR</div>' +
+                    '<div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:#dc3545;">' + toplamBorc.toFixed(0) + ' TL</div><div style="font-size:11px;color:#666;">' + liste.length + ' fatura</div></div>' +
+                '</div>' +
+                kartlar +
+                (liste.length > 0 ? '<div style="margin-top:8px;font-size:11px;color:#444;text-align:center;">Karta tıklayınca abone detayı açılır</div>' : '');
+
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+
+        /* ===================== TAHAKKUK LİSTESİ ===================== */
+
+
+
+        /* ===================== ARAMA ===================== */
+
+        function aboneAra(aramaMetni) {
+            let temiz = aramaMetni.trim().toLowerCase();
+            document.getElementById('aramaSifirla').style.display = temiz ? 'block' : 'none';
+            let satirlar = document.querySelectorAll('#aboneTablosu tbody tr');
+            satirlar.forEach(tr => {
+                let metin = tr.innerText.toLowerCase();
+                tr.style.display = metin.includes(temiz) ? '' : 'none';
+            });
+        }
+
+        function aboneAramaSifirla() {
+            document.getElementById('aboneArama').value = '';
+            document.getElementById('aramaSifirla').style.display = 'none';
+            document.querySelectorAll('#aboneTablosu tbody tr').forEach(tr => tr.style.display = '');
+        }
+
+        /* ===================== ABONE DÜZENLEME ===================== */
+
+        function aboneDuzenleAc(aboneId) {
+            let abone = getAboneler().find(a => a.id == aboneId);
+            if (!abone) return;
+            document.getElementById('duzenleId').value = abone.id;
+            document.getElementById('duzenleAboneNo').value = abone.aboneNo || '';
+            document.getElementById('duzenleTcKimlik').value = abone.tcKimlik || '';
+            document.getElementById('duzenleAdSoyad').value = abone.adSoyad || '';
+            document.getElementById('duzenleAdres').value = abone.adres || '';
+            document.getElementById('duzenleTelefon').value = abone.telefon || '';
+            document.getElementById('duzenleSayacNo').value = abone.sayacNo || '';
+            new bootstrap.Modal(document.getElementById('aboneDuzenleModal')).show();
+        }
+
+        function aboneDuzenleKaydet() {
+            let id = document.getElementById('duzenleId').value;
+            let no = document.getElementById('duzenleAboneNo').value.trim();
+            let ad = document.getElementById('duzenleAdSoyad').value.trim();
+            let tc = document.getElementById('duzenleTcKimlik').value.trim();
+
+            if (!no || !ad) { alert('Abone no ve ad gerekli'); return; }
+            if (tc && (tc.length !== 11 || !/^[0-9]{11}$/.test(tc))) { alert('TC Kimlik No 11 haneli olmalı'); return; }
+
+            let aboneler = getAboneler();
+            // Aynı no veya TC başka abonede var mı?
+            if (aboneler.find(a => a.aboneNo === no && String(a.id) !== String(id))) { alert('Bu abone no başkasında kayıtlı'); return; }
+            if (tc && aboneler.find(a => a.tcKimlik === tc && String(a.id) !== String(id))) { alert('Bu TC başkasında kayıtlı'); return; }
+
+            let abone = aboneler.find(a => String(a.id) === String(id));
+            if (!abone) return;
+
+            abone.aboneNo = no;
+            abone.tcKimlik = tc;
+            abone.adSoyad = ad;
+            abone.adres = document.getElementById('duzenleAdres').value;
+            abone.telefon = document.getElementById('duzenleTelefon').value;
+            abone.sayacNo = document.getElementById('duzenleSayacNo').value.trim();
+
+            setAboneler(aboneler);
+            tablolariGuncelle();
+            bootstrap.Modal.getInstance(document.getElementById('aboneDuzenleModal')).hide();
+
+            // Panel açıksa güncelle
+            let panel = document.getElementById('abonePanel');
+            if (panel.classList.contains('acik')) abonePanelAc(id);
+        }
+
+
+        /* ===================== STAT KART FONKSİYONLARI ===================== */
+
+        function tumAboneleriGoster() {
+            let aboneler = getAboneler();
+            let okumalar = getOkumalar();
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+
+            let kartlar = aboneler.length === 0
+                ? '<div style="text-align:center;padding:40px 0;color:#555;"><i class="fas fa-users" style="font-size:36px;display:block;margin-bottom:10px;"></i>Henüz abone yok</div>'
+                : aboneler.map(a => {
+                    let aboneOkumalari = okumalar.filter(o => String(o.aboneId) === String(a.id));
+                    let sonOkuma = aboneOkumalari.sort((x,y) => y.id - x.id)[0];
+                    let odenmemisler = aboneOkumalari.filter(o => !o.odendi);
+                    let gecikmisSayisi = odenmemisler.filter(o => gecikmeliMi(sonOdemeTarihi(o.tarih))).length;
+
+                    let borderRenk, durumHtml;
+                    if (gecikmisSayisi > 0) {
+                        borderRenk = '#dc3545';
+                        durumHtml = '<span style="background:#330a0a;color:#dc3545;padding:2px 10px;border-radius:8px;font-size:12px;font-weight:600;">⚠️ ' + gecikmisSayisi + ' gecikmiş</span>';
+                    } else if (odenmemisler.length > 0) {
+                        borderRenk = '#ffc107';
+                        durumHtml = '<span style="background:#332200;color:#ffc107;padding:2px 10px;border-radius:8px;font-size:12px;font-weight:600;">⏳ ' + odenmemisler.length + ' bekliyor</span>';
+                    } else {
+                        borderRenk = '#28a745';
+                        durumHtml = '<span style="background:#0f3320;color:#28a745;padding:2px 10px;border-radius:8px;font-size:12px;font-weight:600;">✅ Temiz</span>';
+                    }
+
+                    return '<div onclick="document.getElementById(\'yazdir-overlay\').style.display=\'none\';setTimeout(()=>abonePanelAc(' + a.id + '),100)" ' +
+                        'style="background:#1e1e1e;border:1px solid ' + borderRenk + ';border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;">' +
+                        '<div style="flex:1;min-width:0;">' +
+                            '<div style="font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.adSoyad + '</div>' +
+                            '<div style="font-size:12px;color:#888;margin-top:3px;">' + a.aboneNo + (a.telefon ? ' · ' + a.telefon : '') + '</div>' +
+                            '<div style="font-size:11px;color:#555;margin-top:2px;">' + (a.adres || '') + '</div>' +
+                        '</div>' +
+                        '<div style="text-align:right;flex-shrink:0;">' +
+                            durumHtml +
+                            '<div style="font-size:11px;color:#555;margin-top:6px;">Son end: ' + (sonOkuma ? sonOkuma.sonEndeks : '-') + '</div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+
+            document.getElementById('yazdir-icerik').innerHTML =
+                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+                    '<div style="font-size:17px;font-weight:700;color:#ffc107;"><i class="fas fa-users"></i> TÜM ABONELER</div>' +
+                    '<div style="font-size:20px;font-weight:800;color:#ffc107;">' + aboneler.length + '<span style="font-size:12px;color:#666;font-weight:400;margin-left:4px;">abone</span></div>' +
+                '</div>' +
+                kartlar +
+                (aboneler.length > 0 ? '<div style="margin-top:8px;font-size:11px;color:#444;text-align:center;">Karta tıklayınca abone detayı açılır</div>' : '');
+
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function gecikmisFaturalariGoster() {
+            let aboneler = getAboneler();
+            let okumalar = getOkumalar();
+            let bugun = new Date(); bugun.setHours(0,0,0,0);
+            let liste = [];
+
+            okumalar.forEach(o => {
+                if (o.odendi) return;
+                let sonOdeme = sonOdemeTarihi(o.tarih);
+                if (!gecikmeliMi(sonOdeme)) return;
+                let abone = aboneler.find(a => String(a.id) === String(o.aboneId));
+                if (!abone) return;
+                let gun = Math.floor((bugun - new Date(sonOdeme + 'T00:00:00')) / (1000*60*60*24));
+                let zam = zamHesapla(o.tutar, sonOdeme);
+                liste.push({ abone, okuma: o, gun, zam, toplam: o.tutar + zam });
+            });
+
+            liste.sort((a,b) => b.gun - a.gun);
+            let toplamBorc = liste.reduce((t,i) => t + i.toplam, 0);
+
+            let kartlar = liste.length === 0
+                ? '<div style="text-align:center;padding:40px 0;color:#555;"><i class="fas fa-check-circle" style="font-size:36px;color:#28a745;display:block;margin-bottom:10px;"></i>Gecikmiş fatura yok</div>'
+                : liste.map(item => {
+                    let renkBg = item.gun > 60 ? '#1a0505' : '#1a0a0a';
+                    let renkBorder = item.gun > 60 ? '#c0392b' : '#dc3545';
+                    return '<div onclick="document.getElementById(\'yazdir-overlay\').style.display=\'none\';setTimeout(()=>abonePanelAc(' + item.abone.id + '),100)" style="background:' + renkBg + ';border:1px solid ' + renkBorder + ';border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;">' +
+                        '<div style="flex:1;min-width:0;">' +
+                            '<div style="font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + item.abone.adSoyad + '</div>' +
+                            '<div style="font-size:12px;color:#888;margin-top:3px;">' + item.abone.aboneNo + ' · ' + item.okuma.tarih + '</div>' +
+                            (item.zam > 0 ? '<div style="font-size:11px;color:#e57373;margin-top:2px;">+' + item.zam.toFixed(0) + ' TL gecikme zammı</div>' : '') +
+                        '</div>' +
+                        '<div style="text-align:right;flex-shrink:0;">' +
+                            '<div style="font-size:18px;font-weight:800;color:#dc3545;">' + item.toplam.toFixed(0) + ' TL</div>' +
+                            '<div style="font-size:11px;background:#330a0a;color:#e57373;padding:2px 8px;border-radius:8px;margin-top:4px;">' + item.gun + ' gün gecikmiş</div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+
+            document.getElementById('yazdir-icerik').innerHTML =
+                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+                    '<div style="font-size:17px;font-weight:700;color:#dc3545;"><i class="fas fa-clock"></i> GECİKMİŞ FATURALAR</div>' +
+                    '<div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:#dc3545;">' + toplamBorc.toFixed(0) + ' TL</div><div style="font-size:11px;color:#666;">' + liste.length + ' fatura</div></div>' +
+                '</div>' +
+                kartlar +
+                (liste.length > 0 ? '<div style="margin-top:8px;font-size:11px;color:#444;text-align:center;">Karta tıklayınca abone detayı açılır</div>' : '');
+
+            document.body.classList.add('tahakkuk-print');
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+
+        /* ===================== TAHAKKUK LİSTESİ ===================== */
+
+
+
+        function tahakkukListesiYazdir() {
+            let aboneler = getAboneler().sort((a,b) => a.aboneNo.localeCompare(b.aboneNo, 'tr'));
+            let okumalar = getOkumalar();
+            let ay = getAyarlar();
+            let bugunStr = new Date().toLocaleDateString('tr-TR');
+
+            let satirlar = aboneler.map((a, i) => {
+                let aboneOkumalari = okumalar.filter(o => String(o.aboneId) === String(a.id)).sort((x,y) => y.id - x.id);
+                let sonOkuma = aboneOkumalari[0];
+                let sonEndeks = sonOkuma ? sonOkuma.sonEndeks : '-';
+                let sonTarih = sonOkuma ? sonOkuma.tarih : '-';
+                let birimFiyat = ay.suFiyat;
+                let toplamUcret = sonOkuma ? (sonOkuma.tutar).toFixed(0) + ' TL' : '-';
+
+                return '<tr>' +
+                    '<td style="text-align:center;font-weight:700;">' + (i+1) + '</td>' +
+                    '<td style="font-weight:700;color:#b8860b;">' + a.aboneNo + '</td>' +
+                    '<td style="font-weight:600;">' + a.adSoyad + '</td>' +
+                    '<td style="font-size:10px;color:#b8860b;">' + (a.sayacNo || '-') + '</td>' +
+                    '<td style="text-align:center;font-weight:700;">' + sonEndeks + '</td>' +
+                    '<td style="background:#fffde7;"></td>' +
+                    '<td style="text-align:center;font-size:10px;color:#555;">' + sonTarih + '</td>' +
+                    '<td style="background:#fffde7;"></td>' +
+                    '<td style="text-align:center;">' + birimFiyat + ' TL</td>' +
+                    '<td style="text-align:center;font-weight:700;">' + toplamUcret + '</td>' +
+                    '<td style=""></td>' +
+                    '<td style=""></td>' +
+                '</tr>';
+            }).join('');
+
+            document.getElementById('yazdir-icerik').innerHTML =
+                '<style>' +
+                '.th-baslik{text-align:center;margin-bottom:6px;border-bottom:2px solid #000;padding-bottom:6px;}' +
+                '.th-baslik h1{font-size:14px;font-weight:900;color:#000;font-family:Arial;}' +
+                '.th-baslik h2{font-size:10px;font-weight:700;color:#000;margin-top:2px;font-family:Arial;}' +
+                '.th-baslik .alt{display:flex;justify-content:space-between;margin-top:5px;font-size:8.5px;color:#555;font-family:Arial;}' +
+                '.th-tb{width:100%;border-collapse:collapse;font-family:Arial;font-size:8.5px;}' +
+                '.th-tb thead tr{background:#000!important;color:#fff!important;}' +
+                '.th-tb thead th{padding:3px 4px;font-size:7.5px;text-transform:uppercase;letter-spacing:0.2px;border:1px solid #333;color:#fff!important;background:#000!important;text-align:center;}' +
+                '.th-tb tbody tr:nth-child(even){background:#f5f5f5;}' +
+                '.th-tb td{padding:2px 4px;border:1px solid #ccc;vertical-align:middle;line-height:1.3;}' +
+                '.th-tb tfoot td{background:#f0f0f0;font-size:7px;color:#666;padding:3px;text-align:center;border-top:2px solid #000;}' +
+                '@media print{@page{margin:6mm;size:A4 landscape;}thead{display:table-header-group;}tfoot{display:table-footer-group;}}' +
+                '</style>' +
+                '<div class="th-baslik">' +
+                    '<h1>💧 YAKA KÖYÜ SU İDARESİ</h1>' +
+                    '<h2>ABONE LİSTESİ – SU TAHAKKUK TUTANAĞI</h2>' +
+                    '<div class="alt">' +
+                        '<span>Okuma Tarihi: _____ / _____ / _________</span>' +
+                        '<span>Toplam Abone: <strong>' + aboneler.length + '</strong> &nbsp;|&nbsp; Birim Fiyat: <strong>' + ay.suFiyat + ' TL/ton</strong></span>' +
+                        '<span>Okuyan: _______________________</span>' +
+                    '</div>' +
+                '</div>' +
+                '<table class="th-tb">' +
+                '<thead><tr>' +
+                    '<th style="width:20px;">S.No</th>' +
+                    '<th style="width:36px;">Ab.No</th>' +
+                    '<th style="width:100px;">Ad Soyad</th>' +
+                    '<th style="width:70px;">Sayaç No</th>' +
+                    '<th style="width:52px;">Son End.</th>' +
+                    '<th style="width:58px;background:#e6a800!important;color:#000!important;">Yeni End.</th>' +
+                    '<th style="width:52px;">Tarih</th>' +
+                    '<th style="width:52px;background:#e6a800!important;color:#000!important;">Tüketim</th>' +
+                    '<th style="width:48px;">Fiyat</th>' +
+                    '<th style="width:56px;">Tutar</th>' +
+                    '<th style="width:36px;">Ödeme</th>' +
+                    '<th style="width:56px;">Öd.Tarihi</th>' +
+                '</tr></thead>' +
+                '<tbody>' + satirlar + '</tbody>' +
+                '<tfoot><tr><td colspan="12">Yaka Köyü Su İdaresi &nbsp;–&nbsp; Basım: ' + bugunStr + ' &nbsp;|&nbsp; Bu tutanak su sayacı okuma kaydı amacıyla düzenlenmiştir.</td></tr></tfoot>' +
+                '</table>';
+
+            document.body.classList.add('tahakkuk-print');
+            document.getElementById('yazdir-overlay').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+    </script>
+
+
+    <!-- ABONE DETAY PANELİ -->
+    <div class="panel-overlay" id="panelOverlay" onclick="panelKapat()"></div>
+    <div class="abone-panel" id="abonePanel">
+        <div class="panel-header">
+            <h5><i class="fas fa-user"></i> <span id="panelBaslik">Abone Detay</span></h5>
+            <button class="panel-kapat" onclick="panelKapat()">✕</button>
+        </div>
+        <div class="panel-body" id="panelIcerik"></div>
+    </div>
+
+
+    <!-- FATURA NO / CİLT NO MODALI -->
+    <div class="modal fade" id="faturaNoModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color:#ffc107;font-size:15px;"><i class="fas fa-file-invoice"></i> Fatura Bilgileri</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="fnModalOkumaId">
+                    <div class="mb-3">
+                        <label style="font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Fatura No</label>
+                        <input type="text" id="fnModalFaturaNo" class="form-control mt-1" placeholder="örn: 1542" style="font-size:15px;">
+                    </div>
+                    <div class="mb-1">
+                        <label style="font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:1px;">Cilt No</label>
+                        <input type="text" id="fnModalCiltNo" class="form-control mt-1" placeholder="örn: 3" style="font-size:15px;">
+                    </div>
+                    <small style="color:#555;font-size:11px;">Boş bırakırsanız faturada görünmez.</small>
+                </div>
+                <div class="modal-footer" style="gap:8px;">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">İPTAL</button>
+                    <button type="button" class="btn btn-warning" onclick="faturaNoModalYazdir()"><i class="fas fa-print"></i> YAZDIR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YAZDIR OVERLAY -->
+    <div id="yazdir-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+        <div style="max-width:700px;margin:0 auto;padding:10px;">
+            <!-- Üst buton çubuğu - yapışkan -->
+            <div style="position:sticky;top:0;z-index:10;background:rgba(0,0,0,0.95);padding:10px 0 8px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;margin-bottom:12px;">
+                <span style="color:#ffc107;font-size:13px;font-weight:600;">📄 Belge Önizleme</span>
+                <div style="display:flex;gap:8px;">
+                    <button onclick="document.getElementById('yazdir-overlay').style.display='none';document.body.classList.remove('tahakkuk-print')"
+                        style="background:#2a2a2a;color:#fff;border:1px solid #555;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:13px;min-width:70px;">✕ Kapat</button>
+                    <button onclick="setTimeout(function(){window.print();},300)"
+                        style="background:#ffc107;color:#000;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;min-width:100px;">🖨️ Yazdır</button>
+                </div>
+            </div>
+            <!-- İçerik alanı -->
+            <div id="yazdir-icerik" style="background:#fff;border-radius:10px;padding:24px 20px;color:#222;font-family:Arial,sans-serif;font-size:13px;line-height:1.6;overflow-x:auto;">
+            </div>
+            <!-- Alt butonlar - mobil için tekrar -->
+            <div style="display:flex;gap:8px;justify-content:center;padding:12px 0 20px 0;">
+                <button onclick="document.getElementById('yazdir-overlay').style.display='none';document.body.classList.remove('tahakkuk-print')"
+                    style="background:#2a2a2a;color:#fff;border:1px solid #555;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px;">✕ Kapat</button>
+                <button onclick="setTimeout(function(){window.print();},300)"
+                    style="background:#ffc107;color:#000;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:700;">🖨️ Yazdır / PDF</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
