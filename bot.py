@@ -264,7 +264,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def panel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not yetkili_mi(update): await update.message.reply_text("⛔ Yetkisiz!"); return
-    await update.message.reply_text(f"🌐 Panel: https://yaka-koy-su-bot-2.onrender.com?sifre={os.environ.get('WEB_SIFRE', '')}")
+        await update.message.reply_text(f"🌐 Panel: https://yaka-koy-final.onrender.com?sifre={os.environ.get('WEB_SIFRE', '')}")
 
 async def oku(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not yetkili_mi(update): await update.message.reply_text("⛔ Yetkisiz!"); return
